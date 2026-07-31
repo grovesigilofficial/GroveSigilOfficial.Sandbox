@@ -1,0 +1,46 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --bg:#0b0f0d;
+
+    --forest:#2f6e4a;
+
+    --text:#ffffff;
+
+}
+
+body{
+
+    min-height:100vh;
+
+    background:var(--bg);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+h1{
+
+    color:var(--forest);
+
+    font-size:clamp(3rem,8vw,5rem);
+
+    letter-spacing:2px;
+
+    text-shadow:
+        0 0 8px rgba(47,110,74,.55),
+        0 0 18px rgba(47,110,74,.35),
+        0 0 32px rgba(47,110,74,.18);
+
+}
