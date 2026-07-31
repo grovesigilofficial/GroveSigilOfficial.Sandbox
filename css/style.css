@@ -10,6 +10,12 @@
 
     --forest:#2f6e4a;
 
+    --surface:#111614;
+
+    --border:#232b27;
+
+    --muted:#8f9893;
+
     --text:#ffffff;
 
 }
@@ -20,13 +26,61 @@ body{
 
     background:var(--bg);
 
+    color:var(--text);
+
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+/* ---------- Home ---------- */
+
+header{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    padding:24px;
+
+}
+
+.console-button{
+
+    color:var(--muted);
+
+    text-decoration:none;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    padding:8px 14px;
+
+    font-size:.85rem;
+
+    transition:.25s;
+
+}
+
+.console-button:hover{
+
+    color:var(--forest);
+
+    border-color:var(--forest);
+
+    box-shadow:0 0 12px rgba(47,110,74,.25);
+
+}
+
+main{
+
+    min-height:calc(100vh - 72px);
+
     display:flex;
 
     justify-content:center;
 
     align-items:center;
-
-    font-family:Arial, Helvetica, sans-serif;
 
 }
 
@@ -42,5 +96,119 @@ h1{
         0 0 8px rgba(47,110,74,.55),
         0 0 18px rgba(47,110,74,.35),
         0 0 32px rgba(47,110,74,.18);
+
+}
+
+/* ---------- Login ---------- */
+
+.login-page{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.login-card{
+
+    width:100%;
+
+    max-width:420px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:40px;
+
+    box-shadow:0 0 30px rgba(47,110,74,.08);
+
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    margin:15px 0 30px;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-bottom:18px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    background:#0f1311;
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+input:focus{
+
+    outline:none;
+
+    border-color:var(--forest);
+
+}
+
+button{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:var(--forest);
+
+    color:#08110c;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+button:hover{
+
+    filter:brightness(1.08);
+
+}
+
+.back-link{
+
+    display:block;
+
+    margin-top:24px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    text-decoration:none;
+
+}
+
+.back-link:hover{
+
+    color:var(--forest);
 
 }
