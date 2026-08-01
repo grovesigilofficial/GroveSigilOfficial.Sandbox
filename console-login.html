@@ -115,15 +115,17 @@
 
     <p>Administrator access only.</p>
 
-    <form>
+    <form id="loginForm">
 
         <input
+            id="email"
             type="email"
             placeholder="Email"
             required
         >
 
         <input
+            id="password"
             type="password"
             placeholder="Password"
             required
@@ -145,7 +147,13 @@
 
 </div>
 
+<!-- Supabase Library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Grove -->
 <script src="js/supabase.js"></script>
+
+<!-- Login -->
 <script src="js/console-login.js"></script>
 
 </body>
