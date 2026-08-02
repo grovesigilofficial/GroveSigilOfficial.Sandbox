@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Grove</title>
 
 <style>
@@ -13,6 +16,7 @@
     box-sizing:border-box;
 }
 
+
 body{
 
     background:#0b0f0d;
@@ -22,6 +26,7 @@ body{
     font-family:Arial,Helvetica,sans-serif;
 
 }
+
 
 
 header{
@@ -37,8 +42,8 @@ header{
 }
 
 
-.console,
-.signup{
+
+.nav-button{
 
     color:#8f9893;
 
@@ -55,14 +60,16 @@ header{
 }
 
 
-.console:hover,
-.signup:hover{
+
+.nav-button:hover{
 
     color:#2f6e4a;
 
     border-color:#2f6e4a;
 
 }
+
+
 
 
 main{
@@ -82,6 +89,7 @@ main{
 }
 
 
+
 h1{
 
     color:#2f6e4a;
@@ -95,11 +103,34 @@ h1{
 }
 
 
-.links{
 
-    display:flex;
+.admin-console{
 
-    gap:15px;
+    position:fixed;
+
+    bottom:20px;
+
+    right:20px;
+
+    color:#58635d;
+
+    font-size:.85rem;
+
+    text-decoration:none;
+
+    opacity:.7;
+
+    transition:.2s;
+
+}
+
+
+
+.admin-console:hover{
+
+    color:#2f6e4a;
+
+    opacity:1;
 
 }
 
@@ -108,23 +139,25 @@ h1{
 
 </head>
 
+
 <body>
 
 
 <header>
 
-    <a href="console-login.html" class="console">
+<a href="login.html" class="nav-button">
 
-        Login
+Login
 
-    </a>
+</a>
 
 
-    <a href="console-signup.html" class="signup">
+<a href="signup.html" class="nav-button">
 
-        Create Account
+Create Account
 
-    </a>
+</a>
+
 
 </header>
 
@@ -132,14 +165,26 @@ h1{
 
 <main>
 
-    <h1>
-        Grove
-    </h1>
+
+<h1>
+
+Grove
+
+</h1>
 
 
 </main>
 
 
 
+<a href="console-login.html" class="admin-console">
+
+⚙ Console
+
+</a>
+
+
+
 </body>
+
 </html>
