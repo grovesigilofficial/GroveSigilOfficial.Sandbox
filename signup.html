@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Account • Grove</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body{
+
+    background:#0b0f0d;
+
+    min-height:100vh;
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#d8ddd9;
+
+}
+
+
+
+.container{
+
+    width:350px;
+
+    padding:35px;
+
+    border:1px solid #232b27;
+
+    border-radius:12px;
+
+    background:#101512;
+
+}
+
+
+
+h1{
+
+    color:#2f6e4a;
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+
+
+input{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:15px;
+
+    background:#0b0f0d;
+
+    border:1px solid #232b27;
+
+    border-radius:8px;
+
+    color:white;
+
+}
+
+
+
+button{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#2f6e4a;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+
+
+button:hover{
+
+    opacity:.85;
+
+}
+
+
+
+.message{
+
+    margin-top:15px;
+
+    text-align:center;
+
+    font-size:.9rem;
+
+}
+
+
+
+.login-link{
+
+    display:block;
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:#8f9893;
+
+    text-decoration:none;
+
+}
+
+
+
+.login-link:hover{
+
+    color:#2f6e4a;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>Create Account</h1>
+
+
+<input id="email" type="email" placeholder="Email">
+
+
+<input id="password" type="password" placeholder="Password">
+
+
+<button id="signup">
+
+Create Account
+
+</button>
+
+
+<div class="message" id="message"></div>
+
+
+<a href="login.html" class="login-link">
+
+Already have an account? Login
+
+</a>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/signup.js"></script>
+
+
+</body>
+
+</html>
