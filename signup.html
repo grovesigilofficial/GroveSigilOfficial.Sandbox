@@ -85,6 +85,22 @@ input{
 
 
 
+.password-info{
+
+    color:#8f9893;
+
+    font-size:.8rem;
+
+    line-height:1.5;
+
+    margin-top:-8px;
+
+    margin-bottom:15px;
+
+}
+
+
+
 button{
 
     width:100%;
@@ -120,6 +136,8 @@ button:hover{
     text-align:center;
 
     font-size:.9rem;
+
+    line-height:1.5;
 
 }
 
@@ -163,10 +181,31 @@ button:hover{
 <h1>Create Account</h1>
 
 
-<input id="email" type="email" placeholder="Email">
+<input 
+id="email" 
+type="email" 
+placeholder="Email">
 
 
-<input id="password" type="password" placeholder="Password">
+<input 
+id="password" 
+type="password" 
+placeholder="Password">
+
+
+<div class="password-info">
+
+Password requirements:
+<br>
+• At least 8 characters
+<br>
+• One uppercase letter
+<br>
+• One lowercase letter
+<br>
+• One number
+
+</div>
 
 
 <button id="signup" type="button">
