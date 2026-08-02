@@ -1,10 +1,13 @@
 const form = document.querySelector("#loginForm");
 
+
 form.addEventListener("submit", async function (event) {
 
     event.preventDefault();
 
+
     const email = document.querySelector("#email").value.trim();
+
     const password = document.querySelector("#password").value;
 
 
@@ -26,18 +29,35 @@ form.addEventListener("submit", async function (event) {
         }
 
 
-        console.log("Login successful:", data.user);
+        const user = data.user;
 
+
+        if (!user.email_confirmed_at) {
+
+            alert("Please confirm your email before logging in.");
+
+            await window.grove.auth.signOut();
+
+            return;
+
+        }
+
+
+        alert("Login successful.");
 
         window.location.href = "./console.html";
 
 
-    } catch (err) {
+    }
+
+
+    catch (err) {
 
         console.error(err);
 
         alert(err.message);
 
     }
+
 
 });
