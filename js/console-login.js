@@ -29,13 +29,10 @@ form.addEventListener("submit", async function (event) {
         console.log("Login successful:", data.user);
 
 
-        // Use absolute path from site root
-        window.location.assign("/console.html");
+        window.location.href = "./console.html";
 
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
         console.error(err);
 
