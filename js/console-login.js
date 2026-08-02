@@ -1,12 +1,12 @@
-const form = document.querySelector("form");
+const form = document.querySelector("#loginForm");
 
 form.addEventListener("submit", async function (event) {
 
     event.preventDefault();
 
-    const email = document.querySelector('input[type="email"]').value.trim();
+    const email = document.querySelector("#email").value.trim();
+    const password = document.querySelector("#password").value;
 
-    const password = document.querySelector('input[type="password"]').value;
 
     try {
 
@@ -17,6 +17,7 @@ form.addEventListener("submit", async function (event) {
 
         });
 
+
         if (error) {
 
             alert(error.message);
@@ -24,14 +25,21 @@ form.addEventListener("submit", async function (event) {
 
         }
 
-        window.location.href = "console.html";
+
+        console.log("Login successful:", data.user);
+
+
+        // Use absolute path from site root
+        window.location.assign("/console.html");
+
 
     }
 
     catch (err) {
 
-        alert(err.message);
         console.error(err);
+
+        alert(err.message);
 
     }
 
