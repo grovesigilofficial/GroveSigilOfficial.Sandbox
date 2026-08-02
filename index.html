@@ -23,17 +23,22 @@ body{
 
 }
 
+
 header{
 
     display:flex;
 
     justify-content:flex-end;
 
+    gap:12px;
+
     padding:24px;
 
 }
 
-.console{
+
+.console,
+.signup{
 
     color:#8f9893;
 
@@ -49,13 +54,16 @@ header{
 
 }
 
-.console:hover{
+
+.console:hover,
+.signup:hover{
 
     color:#2f6e4a;
 
     border-color:#2f6e4a;
 
 }
+
 
 main{
 
@@ -67,7 +75,12 @@ main{
 
     align-items:center;
 
+    flex-direction:column;
+
+    gap:30px;
+
 }
+
 
 h1{
 
@@ -81,27 +94,52 @@ h1{
 
 }
 
+
+.links{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+
 </style>
 
 </head>
 
 <body>
 
+
 <header>
 
     <a href="console-login.html" class="console">
 
-        Console
+        Login
+
+    </a>
+
+
+    <a href="console-signup.html" class="signup">
+
+        Create Account
 
     </a>
 
 </header>
 
+
+
 <main>
 
-    <h1>Grove</h1>
+    <h1>
+        Grove
+    </h1>
+
 
 </main>
+
+
 
 </body>
 </html>
