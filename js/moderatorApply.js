@@ -38,32 +38,7 @@ submit.addEventListener("click", async () => {
     try {
 
 
-        if(!window.groveClient){
-
-            throw new Error("Supabase client not loaded.");
-
-        }
-
-
-
         console.log("Grove Client:", window.groveClient);
-
-
-
-        const { data: sessionData, error: sessionError } =
-            await window.groveClient.auth.getSession();
-
-
-
-        console.log("CURRENT SESSION:", sessionData);
-
-
-
-        if(sessionError){
-
-            console.error("Session error:", sessionError);
-
-        }
 
 
 
@@ -77,14 +52,13 @@ submit.addEventListener("click", async () => {
                     reason: reason.value.trim(),
                     status: "pending"
                 }
-            ])
-            .select();
+            ]);
 
 
 
-        console.log("INSERT DATA:", data);
+        console.log("DATA:", data);
 
-        console.log("INSERT ERROR:", error);
+        console.log("ERROR:", error);
 
 
 
@@ -114,7 +88,6 @@ submit.addEventListener("click", async () => {
         message.style.color = "#2f6e4a";
 
 
-
         submit.textContent = "Submitted!";
 
 
@@ -131,7 +104,6 @@ submit.addEventListener("click", async () => {
 
 
         console.error("Application error:", err);
-
 
 
         message.textContent = err.message;
