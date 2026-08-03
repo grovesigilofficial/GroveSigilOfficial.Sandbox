@@ -7,9 +7,7 @@ const logoutButton = document.getElementById("logout");
 async function checkAuth(){
 
 
-    const { data, error } =
-    await window.groveClient.auth.getSession();
-
+    const { data, error } = await window.groveClient.auth.getSession();
 
 
     if(error){
@@ -42,23 +40,19 @@ async function checkAuth(){
 
 
 
-logoutButton.addEventListener("click", async ()=>{
+logoutButton.addEventListener("click", async function(){
 
 
     console.log("Logout clicked");
 
 
-    const { error } =
-    await window.groveClient.auth.signOut();
+    const { error } = await window.groveClient.auth.signOut();
 
 
 
     if(error){
 
-        console.error(
-            "Logout error:",
-            error
-        );
+        console.error("Logout error:", error);
 
         alert(error.message);
 
