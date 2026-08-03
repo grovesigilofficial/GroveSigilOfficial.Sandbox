@@ -1,53 +1,25 @@
-console.log("moderatorConsole.js loaded");
+console.log("moderatorConsole loaded");
 
 
-const applications = document.getElementById("applications");
+const applications =
+document.getElementById("applications");
+
 
 
 async function loadApplications(){
 
 
-    console.log("Loading moderator applications...");
-
-
-    if(!window.groveClient){
-
-        applications.innerHTML = `
-        <p class="error">
-        Supabase client not loaded.
-        </p>
-        `;
-
-        return;
-
-    }
-
-
-
     const { data, error } =
     await window.groveClient
-        .from("moderator_applications")
-        .select("*")
-        .order("created_at", { ascending:false });
-
-
-
-    console.log("Applications data:", data);
-
-    console.log("Applications error:", error);
+    .from("moderator_applications")
+    .select("*")
+    .order("created_at",{ascending:false});
 
 
 
     if(error){
 
-
-        applications.innerHTML = `
-
-        <p class="error">
-        ${error.message}
-        </p>
-
-        `;
+        applications.innerHTML = error.message;
 
         return;
 
@@ -55,16 +27,9 @@ async function loadApplications(){
 
 
 
-    if(!data || data.length === 0){
+    if(!data.length){
 
-
-        applications.innerHTML = `
-
-        <p class="loading">
-        No applications found.
-        </p>
-
-        `;
+        applications.innerHTML = "No applications found.";
 
         return;
 
@@ -79,12 +44,11 @@ async function loadApplications(){
     data.forEach(app => {
 
 
+        const card =
+        document.createElement("div");
 
-        const card = document.createElement("div");
 
-
-        card.className = "card";
-
+        card.className="card";
 
 
         card.innerHTML = `
@@ -93,21 +57,40 @@ async function loadApplications(){
         <b>Email:</b> ${app.email}
         </p>
 
+
         <p>
         <b>Username:</b> ${app.username}
         </p>
+
 
         <p>
         <b>Role:</b> ${app.role}
         </p>
 
+
         <p>
         <b>Reason:</b> ${app.reason}
         </p>
 
+
         <p class="status">
         Status: ${app.status}
         </p>
+
+
+
+        <br>
+
+
+        <button onclick="updateApplication('${app.id}','approved')">
+        Approve
+        </button>
+
+
+        <button onclick="updateApplication('${app.id}','rejected')">
+        Reject
+        </button>
+
 
         `;
 
@@ -116,11 +99,50 @@ async function loadApplications(){
         applications.appendChild(card);
 
 
-
     });
 
 
 }
+
+
+
+
+async function updateApplication(id,status){
+
+
+    const { error } =
+    await window.groveClient
+    .from("moderator_applications")
+    .update({
+
+        status: status
+
+    })
+    .eq("id",id);
+
+
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+
+
+    alert(
+        "Application updated: " + status
+    );
+
+
+
+    loadApplications();
+
+
+}
+
 
 
 
