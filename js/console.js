@@ -4,17 +4,17 @@ console.log("console.js loaded");
 const logoutButton = document.getElementById("logout");
 
 
-
 async function checkAuth(){
 
 
-    const { data, error } = await window.groveClient.auth.getSession();
+    const { data, error } =
+    await window.groveClient.auth.getSession();
 
 
 
     if(error){
 
-        console.error("Session error:", error);
+        console.error("Auth error:", error);
 
         return;
 
@@ -42,19 +42,23 @@ async function checkAuth(){
 
 
 
-logoutButton.addEventListener("click", async function(){
+logoutButton.addEventListener("click", async ()=>{
 
 
     console.log("Logout clicked");
 
 
-    const { error } = await window.groveClient.auth.signOut();
+    const { error } =
+    await window.groveClient.auth.signOut();
 
 
 
     if(error){
 
-        console.error("Logout failed:", error);
+        console.error(
+            "Logout error:",
+            error
+        );
 
         alert(error.message);
 
@@ -62,9 +66,6 @@ logoutButton.addEventListener("click", async function(){
 
     }
 
-
-
-    console.log("Logged out");
 
 
     window.location.href = "console-login.html";
