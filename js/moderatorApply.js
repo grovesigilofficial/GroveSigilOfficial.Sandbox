@@ -38,6 +38,16 @@ submit.addEventListener("click", async () => {
     try {
 
 
+        console.log("Grove Client:", window.groveClient);
+
+
+
+        const sessionCheck = await window.groveClient.auth.getSession();
+
+        console.log("CURRENT SESSION:", sessionCheck);
+
+
+
         const { data, error } = await window.groveClient
             .from("moderator_applications")
             .insert([
@@ -45,7 +55,8 @@ submit.addEventListener("click", async () => {
                     email: email.value,
                     username: username.value,
                     role: role.value,
-                    reason: reason.value
+                    reason: reason.value,
+                    status: "pending"
                 }
             ])
             .select();
