@@ -25,30 +25,64 @@ submit.addEventListener("click", async () => {
 
 
     submit.disabled = true;
-
     submit.textContent = "Submitting...";
 
 
-    const { error } = await supabase
-        .from("moderator_applications")
-        .insert([
-
-            {
-                email: email.value,
-                username: username.value,
-                role: role.value,
-                reason: reason.value
-            }
-
-        ]);
+    try {
 
 
+        const { data, error } = await supabase
+            .from("moderator_applications")
+            .insert([
+                {
+                    email: email.value,
+                    username: username.value,
+                    role: role.value,
+                    reason: reason.value
+                }
+            ])
+            .select();
 
-    if(error){
 
-        console.error(error);
 
-        message.textContent = "Something went wrong. Please try again.";
+        console.log("DATA:", data);
+        console.log("ERROR:", error);
+
+
+
+        if(error){
+
+            message.textContent = error.message;
+            message.style.color = "#ff5555";
+
+            submit.disabled = false;
+            submit.textContent = "Submit Application";
+
+            return;
+
+        }
+
+
+
+        message.textContent = "Application submitted successfully!";
+        message.style.color = "#2f6e4a";
+
+
+        setTimeout(() => {
+
+            window.location.href = "index.html";
+
+        },2000);
+
+
+
+    } catch(err){
+
+
+        console.error(err);
+
+
+        message.textContent = err.message;
 
         message.style.color = "#ff5555";
 
@@ -58,22 +92,7 @@ submit.addEventListener("click", async () => {
         submit.textContent = "Submit Application";
 
 
-        return;
-
     }
-
-
-
-    message.textContent = "Application submitted successfully.";
-
-    message.style.color = "#2f6e4a";
-
-
-    setTimeout(() => {
-
-        window.location.href = "index.html";
-
-    }, 2000);
 
 
 });
