@@ -1,8 +1,7 @@
 console.log("moderatorConsole loaded");
 
 
-const applications =
-document.getElementById("applications");
+const applications = document.getElementById("applications");
 
 
 
@@ -13,6 +12,7 @@ async function loadApplications(){
     await window.groveClient
     .from("moderator_applications")
     .select("*")
+    .eq("status", "pending")
     .order("created_at",{ascending:false});
 
 
@@ -29,7 +29,7 @@ async function loadApplications(){
 
     if(!data.length){
 
-        applications.innerHTML = "No applications found.";
+        applications.innerHTML = "No pending applications.";
 
         return;
 
@@ -44,11 +44,10 @@ async function loadApplications(){
     data.forEach(app => {
 
 
-        const card =
-        document.createElement("div");
+        const card = document.createElement("div");
 
 
-        card.className="card";
+        card.className = "card";
 
 
         card.innerHTML = `
@@ -78,7 +77,6 @@ async function loadApplications(){
         </p>
 
 
-
         <br>
 
 
@@ -90,7 +88,6 @@ async function loadApplications(){
         <button onclick="updateApplication('${app.id}','rejected')">
         Reject
         </button>
-
 
         `;
 
@@ -135,7 +132,6 @@ async function updateApplication(id,status){
     alert(
         "Application updated: " + status
     );
-
 
 
     loadApplications();
