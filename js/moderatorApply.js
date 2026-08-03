@@ -1,9 +1,13 @@
+console.log("moderatorApply.js loaded");
+
+
 const email = document.getElementById("email");
 const username = document.getElementById("username");
 const role = document.getElementById("role");
 const reason = document.getElementById("reason");
 const submit = document.getElementById("submit");
 const message = document.getElementById("message");
+
 
 
 submit.addEventListener("click", async () => {
@@ -24,14 +28,17 @@ submit.addEventListener("click", async () => {
     }
 
 
+
     submit.disabled = true;
+
     submit.textContent = "Submitting...";
+
 
 
     try {
 
 
-        const { data, error } = await supabase
+        const { data, error } = await window.groveClient
             .from("moderator_applications")
             .insert([
                 {
@@ -46,17 +53,23 @@ submit.addEventListener("click", async () => {
 
 
         console.log("DATA:", data);
+
         console.log("ERROR:", error);
 
 
 
         if(error){
 
+
             message.textContent = error.message;
+
             message.style.color = "#ff5555";
 
+
             submit.disabled = false;
+
             submit.textContent = "Submit Application";
+
 
             return;
 
@@ -65,7 +78,9 @@ submit.addEventListener("click", async () => {
 
 
         message.textContent = "Application submitted successfully!";
+
         message.style.color = "#2f6e4a";
+
 
 
         setTimeout(() => {
@@ -79,7 +94,7 @@ submit.addEventListener("click", async () => {
     } catch(err){
 
 
-        console.error(err);
+        console.error("Application error:", err);
 
 
         message.textContent = err.message;
