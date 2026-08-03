@@ -9,16 +9,13 @@ const message = document.getElementById("message");
 
 signupButton.addEventListener("click", async () => {
 
-    console.log("Signup button clicked");
-
-
     const email = emailInput.value.trim();
-    const password = passwordInput.value;
+    const password = passwordInput.value.trim();
 
 
     if (!email || !password) {
 
-        message.textContent = "Please enter an email and password.";
+        message.textContent = "Please enter your email and password.";
         return;
 
     }
@@ -27,51 +24,41 @@ signupButton.addEventListener("click", async () => {
     message.textContent = "Creating account...";
 
 
-    try {
+    const { data, error } = await supabase.auth.signUp({
 
+        email: email,
 
-        const result = await supabase.auth.signUp({
+        password: password,
 
-            email: email,
+        options: {
 
-            password: password
-
-        });
-
-
-        console.log(result);
-
-
-        const { data, error } = result;
-
-
-        if(error){
-
-            console.error(error);
-
-            message.textContent = error.message;
-
-            return;
+            emailRedirectTo: window.location.origin + "/login.html"
 
         }
 
-
-        message.textContent =
-        "✓ Account created. Check your email to confirm your account.";
+    });
 
 
-        emailInput.value = "";
-        passwordInput.value = "";
 
-
-    }
-
-    catch(error){
+    if (error) {
 
         console.error(error);
 
+        message.textContent = error.message;
+
+        return;
+
+    }
+
+
+
+    if (data.user) {
+
         message.textContent =
-        "Signup failed. Check console.";
+        "✓ Account created. Check your email to confirm your account before logging in.";
+
+        emailInput.value = "";
+        passwordInput.value = "";
 
     }
 
