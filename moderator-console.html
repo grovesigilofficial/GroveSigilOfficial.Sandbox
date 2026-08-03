@@ -16,51 +16,84 @@
     box-sizing:border-box;
 }
 
+
 body{
 
     background:#0b0f0d;
+
     min-height:100vh;
+
     font-family:Arial,Helvetica,sans-serif;
+
     color:#d8ddd9;
 
 }
 
 
+
 .container{
 
     width:90%;
+
     max-width:900px;
+
     margin:40px auto;
 
 }
 
 
+
 h1{
 
     color:#2f6e4a;
+
     text-align:center;
+
+    margin-bottom:10px;
+
+    text-shadow:
+    0 0 10px rgba(47,110,74,.4);
+
+}
+
+
+
+.subtitle{
+
+    text-align:center;
+
+    color:#8f9893;
+
     margin-bottom:30px;
 
 }
 
 
+
 .card{
 
     background:#101512;
+
     border:1px solid #232b27;
+
     border-radius:12px;
+
     padding:20px;
+
     margin-bottom:20px;
 
 }
 
 
+
 .card p{
 
     margin-bottom:10px;
+
     color:#b5beb9;
 
 }
+
 
 
 .status{
@@ -70,16 +103,43 @@ h1{
 }
 
 
+
+.loading{
+
+    text-align:center;
+
+    color:#8f9893;
+
+}
+
+
+
+.error{
+
+    text-align:center;
+
+    color:#ff5555;
+
+}
+
+
+
 button{
 
     padding:10px 15px;
+
     border:none;
+
     border-radius:8px;
+
     cursor:pointer;
+
     background:#2f6e4a;
+
     color:white;
 
 }
+
 
 
 button:hover{
@@ -89,9 +149,34 @@ button:hover{
 }
 
 
+
+.back{
+
+    display:block;
+
+    text-align:center;
+
+    margin-top:30px;
+
+    color:#8f9893;
+
+    text-decoration:none;
+
+}
+
+
+
+.back:hover{
+
+    color:#2f6e4a;
+
+}
+
+
 </style>
 
 </head>
+
 
 
 <body>
@@ -105,14 +190,30 @@ Grove Moderator Applications
 </h1>
 
 
-<div id="applications">
+<div class="subtitle">
+Review beta testers, moderators, and contributors.
+</div>
+
+
+
+<div id="applications" class="loading">
 
 Loading applications...
 
 </div>
 
 
+
+<a href="console.html" class="back">
+
+← Back to Console
+
+</a>
+
+
+
 </div>
+
 
 
 
@@ -121,6 +222,7 @@ Loading applications...
 <script src="js/supabase.js"></script>
 
 <script src="js/moderatorConsole.js"></script>
+
 
 
 </body>
