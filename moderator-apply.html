@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Join Grove Team</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body{
+
+    background:#0b0f0d;
+
+    min-height:100vh;
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#d8ddd9;
+
+}
+
+
+
+.container{
+
+    width:380px;
+
+    padding:35px;
+
+    background:#101512;
+
+    border:1px solid #232b27;
+
+    border-radius:12px;
+
+}
+
+
+
+h1{
+
+    color:#2f6e4a;
+
+    text-align:center;
+
+    margin-bottom:15px;
+
+}
+
+
+
+.description{
+
+    color:#8f9893;
+
+    text-align:center;
+
+    line-height:1.5;
+
+    font-size:.9rem;
+
+    margin-bottom:25px;
+
+}
+
+
+
+input,
+textarea,
+select{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:15px;
+
+    background:#0b0f0d;
+
+    border:1px solid #232b27;
+
+    border-radius:8px;
+
+    color:white;
+
+}
+
+
+
+textarea{
+
+    height:120px;
+
+    resize:none;
+
+}
+
+
+
+button{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#2f6e4a;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+
+
+button:hover{
+
+    opacity:.85;
+
+}
+
+
+
+.back{
+
+    display:block;
+
+    text-align:center;
+
+    margin-top:20px;
+
+    color:#8f9893;
+
+    text-decoration:none;
+
+}
+
+
+.back:hover{
+
+    color:#2f6e4a;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>
+
+Join Grove Team
+
+</h1>
+
+
+<div class="description">
+
+Apply to become a beta tester, moderator, or contributor.
+Help shape Grove as it grows.
+
+</div>
+
+
+
+<input 
+id="email"
+type="email"
+placeholder="Email">
+
+
+
+<input 
+id="username"
+type="text"
+placeholder="Username">
+
+
+
+<select id="role">
+
+<option value="">
+
+Select Role
+
+</option>
+
+<option value="beta_tester">
+
+Beta Tester
+
+</option>
+
+
+<option value="moderator">
+
+Moderator
+
+</option>
+
+
+<option value="contributor">
+
+Contributor
+
+</option>
+
+
+</select>
+
+
+
+<textarea 
+id="reason"
+placeholder="Why do you want to join the Grove team?">
+</textarea>
+
+
+
+<button id="submit">
+
+Submit Application
+
+</button>
+
+
+
+<a href="index.html" class="back">
+
+← Back to Grove
+
+</a>
+
+
+
+</div>
+
+
+</body>
+
+</html>
