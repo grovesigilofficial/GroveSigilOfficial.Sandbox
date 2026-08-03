@@ -9,13 +9,16 @@ const message = document.getElementById("message");
 
 signupButton.addEventListener("click", async () => {
 
+    console.log("Signup clicked");
+
+
     const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
+    const password = passwordInput.value;
 
 
     if (!email || !password) {
 
-        message.textContent = "Please enter your email and password.";
+        message.textContent = "Enter email and password.";
         return;
 
     }
@@ -24,41 +27,48 @@ signupButton.addEventListener("click", async () => {
     message.textContent = "Creating account...";
 
 
-    const { data, error } = await supabase.auth.signUp({
+    try {
 
-        email: email,
+        console.log("Supabase client:", supabase);
 
-        password: password,
 
-        options: {
+        const response = await supabase.auth.signUp({
 
-            emailRedirectTo: window.location.origin + "/login.html"
+            email: email,
+
+            password: password
+
+        });
+
+
+        console.log("Supabase response:", response);
+
+
+        const { data, error } = response;
+
+
+        if(error){
+
+            console.error("Signup error:", error);
+
+            message.textContent = error.message;
+
+            return;
 
         }
 
-    });
-
-
-
-    if (error) {
-
-        console.error(error);
-
-        message.textContent = error.message;
-
-        return;
-
-    }
-
-
-
-    if (data.user) {
 
         message.textContent =
-        "✓ Account created. Check your email to confirm your account before logging in.";
+        "✓ Account created. Check your email to confirm your account.";
 
-        emailInput.value = "";
-        passwordInput.value = "";
+
+    } 
+    
+    catch(err){
+
+        console.error("CRASH:", err);
+
+        message.textContent = "Error: " + err.message;
 
     }
 
