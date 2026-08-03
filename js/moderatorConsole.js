@@ -1,26 +1,70 @@
-console.log("moderatorConsole loaded");
+console.log("moderatorConsole.js loaded");
 
 
-const applications =
-document.getElementById("applications");
-
+const applications = document.getElementById("applications");
 
 
 async function loadApplications(){
 
 
+    console.log("Loading moderator applications...");
+
+
+    if(!window.groveClient){
+
+        applications.innerHTML = `
+        <p class="error">
+        Supabase client not loaded.
+        </p>
+        `;
+
+        return;
+
+    }
+
+
+
     const { data, error } =
     await window.groveClient
-    .from("moderator_applications")
-    .select("*")
-    .order("created_at",{ascending:false});
+        .from("moderator_applications")
+        .select("*")
+        .order("created_at", { ascending:false });
+
+
+
+    console.log("Applications data:", data);
+
+    console.log("Applications error:", error);
 
 
 
     if(error){
 
-        applications.innerHTML =
-        error.message;
+
+        applications.innerHTML = `
+
+        <p class="error">
+        ${error.message}
+        </p>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    if(!data || data.length === 0){
+
+
+        applications.innerHTML = `
+
+        <p class="loading">
+        No applications found.
+        </p>
+
+        `;
 
         return;
 
@@ -35,11 +79,12 @@ async function loadApplications(){
     data.forEach(app => {
 
 
-        const card =
-        document.createElement("div");
+
+        const card = document.createElement("div");
 
 
-        card.className="card";
+        card.className = "card";
+
 
 
         card.innerHTML = `
@@ -67,7 +112,9 @@ async function loadApplications(){
         `;
 
 
+
         applications.appendChild(card);
+
 
 
     });
