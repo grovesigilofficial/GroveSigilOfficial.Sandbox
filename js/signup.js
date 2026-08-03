@@ -9,16 +9,14 @@ const message = document.getElementById("message");
 
 signupButton.addEventListener("click", async () => {
 
-    console.log("Signup clicked");
-
 
     const email = emailInput.value.trim();
     const password = passwordInput.value;
 
 
-    if (!email || !password) {
+    if(!email || !password){
 
-        message.textContent = "Enter email and password.";
+        message.textContent = "Please enter email and password.";
         return;
 
     }
@@ -29,10 +27,8 @@ signupButton.addEventListener("click", async () => {
 
     try {
 
-        console.log("Supabase client:", supabase);
 
-
-        const response = await supabase.auth.signUp({
+        const { data, error } = await window.groveClient.auth.signUp({
 
             email: email,
 
@@ -41,15 +37,10 @@ signupButton.addEventListener("click", async () => {
         });
 
 
-        console.log("Supabase response:", response);
-
-
-        const { data, error } = response;
-
 
         if(error){
 
-            console.error("Signup error:", error);
+            console.error("Supabase error:", error);
 
             message.textContent = error.message;
 
@@ -58,17 +49,26 @@ signupButton.addEventListener("click", async () => {
         }
 
 
+
+        if(data.user){
+
+            message.textContent =
+            "✓ Account created. Check your email to confirm your account before logging in.";
+
+            emailInput.value = "";
+            passwordInput.value = "";
+
+        }
+
+
+    } catch(error){
+
+
+        console.error("Signup failed:", error);
+
         message.textContent =
-        "✓ Account created. Check your email to confirm your account.";
+        "Signup failed: " + error.message;
 
-
-    } 
-    
-    catch(err){
-
-        console.error("CRASH:", err);
-
-        message.textContent = "Error: " + err.message;
 
     }
 
