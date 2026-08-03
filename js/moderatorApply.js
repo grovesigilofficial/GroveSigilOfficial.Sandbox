@@ -14,10 +14,10 @@ submit.addEventListener("click", async () => {
 
 
     if(
-        !email.value ||
-        !username.value ||
+        !email.value.trim() ||
+        !username.value.trim() ||
         !role.value ||
-        !reason.value
+        !reason.value.trim()
     ){
 
         message.textContent = "Please complete all fields.";
@@ -38,13 +38,32 @@ submit.addEventListener("click", async () => {
     try {
 
 
+        if(!window.groveClient){
+
+            throw new Error("Supabase client not loaded.");
+
+        }
+
+
+
         console.log("Grove Client:", window.groveClient);
 
 
 
-        const sessionCheck = await window.groveClient.auth.getSession();
+        const { data: sessionData, error: sessionError } =
+            await window.groveClient.auth.getSession();
 
-        console.log("CURRENT SESSION:", sessionCheck);
+
+
+        console.log("CURRENT SESSION:", sessionData);
+
+
+
+        if(sessionError){
+
+            console.error("Session error:", sessionError);
+
+        }
 
 
 
@@ -52,10 +71,10 @@ submit.addEventListener("click", async () => {
             .from("moderator_applications")
             .insert([
                 {
-                    email: email.value,
-                    username: username.value,
+                    email: email.value.trim(),
+                    username: username.value.trim(),
                     role: role.value,
-                    reason: reason.value,
+                    reason: reason.value.trim(),
                     status: "pending"
                 }
             ])
@@ -63,9 +82,9 @@ submit.addEventListener("click", async () => {
 
 
 
-        console.log("DATA:", data);
+        console.log("INSERT DATA:", data);
 
-        console.log("ERROR:", error);
+        console.log("INSERT ERROR:", error);
 
 
 
@@ -88,9 +107,15 @@ submit.addEventListener("click", async () => {
 
 
 
-        message.textContent = "Application submitted successfully!";
+        message.textContent = 
+            "Application submitted successfully!";
+
 
         message.style.color = "#2f6e4a";
+
+
+
+        submit.textContent = "Submitted!";
 
 
 
@@ -106,6 +131,7 @@ submit.addEventListener("click", async () => {
 
 
         console.error("Application error:", err);
+
 
 
         message.textContent = err.message;
