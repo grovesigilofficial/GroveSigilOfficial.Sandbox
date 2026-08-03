@@ -3,9 +3,25 @@ const username = document.getElementById("username");
 const role = document.getElementById("role");
 const reason = document.getElementById("reason");
 const submit = document.getElementById("submit");
+const message = document.getElementById("message");
 
 
 submit.addEventListener("click", async () => {
+
+
+    if(
+        !email.value ||
+        !username.value ||
+        !role.value ||
+        !reason.value
+    ){
+
+        message.textContent = "Please complete all fields.";
+        message.style.color = "#ffb84d";
+
+        return;
+
+    }
 
 
     submit.disabled = true;
@@ -13,7 +29,7 @@ submit.addEventListener("click", async () => {
     submit.textContent = "Submitting...";
 
 
-    const { data, error } = await supabase
+    const { error } = await supabase
         .from("moderator_applications")
         .insert([
 
@@ -30,11 +46,17 @@ submit.addEventListener("click", async () => {
 
     if(error){
 
-        alert(error.message);
+        console.error(error);
+
+        message.textContent = "Something went wrong. Please try again.";
+
+        message.style.color = "#ff5555";
+
 
         submit.disabled = false;
 
         submit.textContent = "Submit Application";
+
 
         return;
 
@@ -42,9 +64,16 @@ submit.addEventListener("click", async () => {
 
 
 
-    alert("Application submitted successfully. Thank you for helping Grove grow.");
+    message.textContent = "Application submitted successfully.";
 
-    window.location.href = "index.html";
+    message.style.color = "#2f6e4a";
+
+
+    setTimeout(() => {
+
+        window.location.href = "index.html";
+
+    }, 2000);
 
 
 });
