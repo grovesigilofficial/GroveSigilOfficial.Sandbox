@@ -1,74 +1,262 @@
-console.log("console.js loaded");
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Console • Grove</title>
 
 
-const logoutButton = document.getElementById("logout");
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 
-async function checkAuth(){
+:root{
 
-
-    const { data, error } = await window.groveClient.auth.getSession();
-
-
-
-    if(error){
-
-        console.error("Auth check error:", error);
-
-        return;
-
-    }
-
-
-
-    if(!data.session){
-
-        window.location.href = "console-login.html";
-
-        return;
-
-    }
-
-
-
-    console.log(
-        "Authenticated:",
-        data.session.user.email
-    );
-
+    --bg:#0b0f0d;
+    --card:#111614;
+    --border:#232b27;
+    --accent:#2f6e4a;
+    --text:#ffffff;
+    --muted:#8f9893;
 
 }
 
 
 
-logoutButton.addEventListener("click", async ()=>{
+body{
 
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial, Helvetica, sans-serif;
+    padding:40px;
 
-    const { error } =
-    await window.groveClient.auth.signOut();
-
-
-
-    if(error){
-
-        console.error(
-            "Logout error:",
-            error
-        );
-
-        alert(error.message);
-
-        return;
-
-    }
+}
 
 
 
-    window.location.href = "console-login.html";
+.container{
+
+    max-width:900px;
+    margin:auto;
+
+}
 
 
-});
+
+header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+
+}
 
 
 
-checkAuth();
+h1{
+
+    color:var(--accent);
+
+    text-shadow:
+    0 0 8px rgba(47,110,74,.45),
+    0 0 18px rgba(47,110,74,.20);
+
+}
+
+
+
+button{
+
+    background:var(--accent);
+    color:#08110c;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+
+}
+
+
+
+button:hover{
+
+    opacity:.85;
+
+}
+
+
+
+.card{
+
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:30px;
+    margin-bottom:20px;
+
+}
+
+
+
+.card h2{
+
+    margin-bottom:10px;
+
+}
+
+
+
+.card p{
+
+    color:var(--muted);
+
+}
+
+
+
+.console-link{
+
+    display:inline-block;
+
+    margin-top:15px;
+
+    text-decoration:none;
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+
+<header>
+
+
+<h1>
+Grove Console
+</h1>
+
+
+<button id="logout">
+
+Logout
+
+</button>
+
+
+</header>
+
+
+
+
+<div class="card">
+
+
+<h2>
+Welcome, Architect.
+</h2>
+
+
+<p>
+Private Grove administration console.
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+Tasks
+</h2>
+
+
+<p>
+Console modules will be added here.
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+Moderator Applications
+</h2>
+
+
+<p>
+Review beta testers, moderators, and contributors joining Grove.
+</p>
+
+
+
+<a href="moderator-console.html" class="console-link">
+
+
+<button>
+
+Open Applications
+
+</button>
+
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/console.js"></script>
+
+
+
+</body>
+
+
+</html>
