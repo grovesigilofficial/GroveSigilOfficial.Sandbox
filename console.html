@@ -1,316 +1,512 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Console • Grove</title>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-:root{
-    --bg:#0b0f0d;
-    --card:#111614;
-    --border:#232b27;
-    --accent:#2f6e4a;
-    --text:#ffffff;
-    --muted:#8f9893;
-}
+console.log("console.js loaded");
 
 
-body{
-
-    min-height:100vh;
-    background:var(--bg);
-    color:var(--text);
-    font-family:Arial,Helvetica,sans-serif;
-    padding:40px;
-
-}
+const logoutButton =
+document.getElementById("logout");
 
 
-.container{
+const addTaskButton =
+document.getElementById("add-task");
 
-    max-width:900px;
-    margin:auto;
 
-}
+const taskTitle =
+document.getElementById("task-title");
+
+
+const taskDescription =
+document.getElementById("task-description");
+
+
+const tasksContainer =
+document.getElementById("tasks");
 
 
 
-header{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:40px;
-
-}
 
 
+async function checkAuth(){
 
-h1{
 
-    color:var(--accent);
-
-    text-shadow:
-    0 0 8px rgba(47,110,74,.45),
-    0 0 18px rgba(47,110,74,.20);
-
-}
+    const { data, error } =
+    await window.groveClient.auth.getSession();
 
 
 
-button{
+    if(error){
 
-    background:var(--accent);
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:10px;
-    cursor:pointer;
+        console.error(
+            "Auth error:",
+            error
+        );
+
+        return;
+
+    }
+
+
+
+
+    if(!data.session){
+
+        window.location.href =
+        "console-login.html";
+
+        return;
+
+    }
+
+
+
+    console.log(
+        "Authenticated:",
+        data.session.user.email
+    );
+
+
+
+    loadTasks();
+
 
 }
 
 
 
-button:hover{
 
-    opacity:.85;
+
+
+
+async function loadTasks(){
+
+
+    const { data, error } =
+    await window.groveClient
+    .from("tasks")
+    .select("*")
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+
+
+    if(error){
+
+        console.error(
+            "Task loading error:",
+            error
+        );
+
+
+        tasksContainer.innerHTML =
+        "<p>Unable to load tasks.</p>";
+
+
+        return;
+
+    }
+
+
+
+
+    if(!data.length){
+
+        tasksContainer.innerHTML =
+        "<p>No tasks yet.</p>";
+
+        return;
+
+    }
+
+
+
+
+    tasksContainer.innerHTML = "";
+
+
+
+    data.forEach(task=>{
+
+
+        const div =
+        document.createElement("div");
+
+
+        div.className =
+        "task";
+
+
+
+        if(task.completed){
+
+            div.classList.add(
+                "completed"
+            );
+
+        }
+
+
+
+        div.innerHTML = `
+
+
+        <div class="task-title">
+
+        ${task.completed ? "✓" : "☐"}
+
+        ${task.title}
+
+        </div>
+
+
+        <p>
+
+        ${task.description || ""}
+
+        </p>
+
+
+        <div class="task-buttons">
+
+
+        <button onclick="toggleTask('${task.id}', ${task.completed})">
+
+        ${task.completed ? "Undo" : "Complete"}
+
+        </button>
+
+
+        <button onclick="editTask('${task.id}', '${task.title.replace(/'/g,"\\'")}')">
+
+        Edit
+
+        </button>
+
+
+        <button onclick="deleteTask('${task.id}')">
+
+        Delete
+
+        </button>
+
+
+        </div>
+
+
+        `;
+
+
+
+        tasksContainer.appendChild(div);
+
+
+
+    });
+
+
 
 }
 
 
 
-.card{
 
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:30px;
-    margin-bottom:20px;
+
+
+
+async function addTask(){
+
+
+    const title =
+    taskTitle.value.trim();
+
+
+    const description =
+    taskDescription.value.trim();
+
+
+
+
+    if(!title){
+
+        alert(
+            "Enter a task title."
+        );
+
+        return;
+
+    }
+
+
+
+
+    const { error } =
+    await window.groveClient
+    .from("tasks")
+    .insert({
+
+        title,
+
+        description
+
+    });
+
+
+
+
+
+    if(error){
+
+        console.error(
+            error
+        );
+
+        alert(
+            error.message
+        );
+
+        return;
+
+    }
+
+
+
+
+    taskTitle.value = "";
+
+    taskDescription.value = "";
+
+
+
+    loadTasks();
+
+
 
 }
 
 
 
-.card h2{
 
-    margin-bottom:15px;
+
+
+
+async function toggleTask(id, completed){
+
+
+    const { error } =
+    await window.groveClient
+    .from("tasks")
+    .update({
+
+        completed:
+        !completed,
+
+        updated_at:
+        new Date()
+
+    })
+    .eq(
+        "id",
+        id
+    );
+
+
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+
+    loadTasks();
+
 
 }
 
 
 
-.card p{
 
-    color:var(--muted);
+
+
+
+async function editTask(id, oldTitle){
+
+
+    const newTitle =
+    prompt(
+        "Edit task:",
+        oldTitle
+    );
+
+
+
+    if(!newTitle){
+
+        return;
+
+    }
+
+
+
+
+    const { error } =
+    await window.groveClient
+    .from("tasks")
+    .update({
+
+        title:
+        newTitle,
+
+        updated_at:
+        new Date()
+
+    })
+    .eq(
+        "id",
+        id
+    );
+
+
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+
+    loadTasks();
+
 
 }
 
 
 
-input, textarea{
 
-    width:100%;
-    background:#0b0f0d;
-    color:white;
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px;
-    margin-bottom:12px;
+
+
+
+async function deleteTask(id){
+
+
+    const confirmDelete =
+    confirm(
+        "Delete this task?"
+    );
+
+
+
+    if(!confirmDelete){
+
+        return;
+
+    }
+
+
+
+
+    const { error } =
+    await window.groveClient
+    .from("tasks")
+    .delete()
+    .eq(
+        "id",
+        id
+    );
+
+
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+
+    loadTasks();
+
 
 }
 
 
 
-textarea{
 
-    min-height:100px;
-    resize:none;
 
-}
 
 
 
-.task{
+logoutButton.addEventListener(
+"click",
+async function(){
 
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:15px;
-    margin-top:15px;
 
-}
 
+    const { error } =
+    await window.groveClient.auth.signOut();
 
 
-.task.completed{
 
-    opacity:.55;
+    if(error){
 
-}
+        console.error(
+            "Logout error:",
+            error
+        );
 
+        alert(
+            error.message
+        );
 
+        return;
 
-.task-title{
+    }
 
-    font-size:1.1rem;
 
-}
 
+    window.location.href =
+    "console-login.html";
 
 
-.task-buttons{
 
-    margin-top:12px;
+});
 
-}
 
 
 
-.task-buttons button{
 
-    margin-right:8px;
 
-}
+addTaskButton.addEventListener(
+"click",
+addTask
+);
 
 
 
-.console-link{
 
-    display:inline-block;
-    margin-top:20px;
 
-}
+window.toggleTask =
+toggleTask;
 
 
+window.editTask =
+editTask;
 
-</style>
 
-</head>
+window.deleteTask =
+deleteTask;
 
 
-<body>
 
 
-<div class="container">
 
-
-<header>
-
-<h1>
-Grove Console
-</h1>
-
-
-<button id="logout">
-Logout
-</button>
-
-
-</header>
-
-
-
-<div class="card">
-
-<h2>
-Welcome, Architect.
-</h2>
-
-<p>
-Private Grove administration console.
-</p>
-
-</div>
-
-
-
-
-<div class="card">
-
-<h2>
-Tasks
-</h2>
-
-
-<input id="task-title" placeholder="Task title">
-
-
-<textarea id="task-description" placeholder="Task description"></textarea>
-
-
-<button id="add-task">
-
-Add Task
-
-</button>
-
-
-
-<div id="tasks">
-
-Loading tasks...
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="card">
-
-<h2>
-Moderator Applications
-</h2>
-
-
-<p>
-Review beta testers, moderators, and contributors joining Grove.
-</p>
-
-
-
-<a href="moderator-console.html" class="console-link">
-
-<button>
-
-Open Applications
-
-</button>
-
-</a>
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="js/supabase.js"></script>
-
-<script src="js/console.js"></script>
-
-
-</body>
-
-    </html>
+checkAuth();
