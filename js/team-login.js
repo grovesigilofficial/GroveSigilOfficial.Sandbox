@@ -18,7 +18,6 @@ document.getElementById("message");
 
 
 
-
 loginButton.addEventListener("click", async ()=>{
 
 
@@ -33,17 +32,12 @@ loginButton.addEventListener("click", async ()=>{
 
     if(!email || !password){
 
-
         message.textContent =
         "Enter email and password.";
 
-
-        message.style.color =
-        "#ff5555";
-
+        message.style.color="#ff5555";
 
         return;
-
 
     }
 
@@ -53,43 +47,27 @@ loginButton.addEventListener("click", async ()=>{
     "Logging in...";
 
 
-    message.style.color =
-    "#8f9893";
-
-
-
 
     const { data, error } =
     await window.groveClient.auth.signInWithPassword({
 
         email,
-
         password
 
     });
 
 
 
-
     if(error){
 
-
-        console.error(
-            "Login error:",
-            error
-        );
-
+        console.error(error);
 
         message.textContent =
         error.message;
 
-
-        message.style.color =
-        "#ff5555";
-
+        message.style.color="#ff5555";
 
         return;
-
 
     }
 
@@ -101,18 +79,12 @@ loginButton.addEventListener("click", async ()=>{
 
 
 
-
     const { data: member, error: memberError } =
     await window.groveClient
     .from("team_members")
     .select("*")
-    .eq(
-        "email",
-        user.email
-    )
+    .eq("user_id", user.id)
     .single();
-
-
 
 
 
@@ -120,21 +92,18 @@ loginButton.addEventListener("click", async ()=>{
 
 
         console.error(
-            "Team lookup error:",
+            "Not a team member:",
             memberError
         );
 
 
-        message.textContent =
-        "You are not approved for Grove Team access.";
-
-
-        message.style.color =
-        "#ff5555";
-
-
-
         await window.groveClient.auth.signOut();
+
+
+        message.textContent =
+        "You do not have Grove Team access.";
+
+        message.style.color="#ff5555";
 
 
         return;
@@ -146,54 +115,20 @@ loginButton.addEventListener("click", async ()=>{
 
 
     message.textContent =
-    "Welcome to Grove Team.";
+    "Welcome to Grove.";
 
-
-    message.style.color =
-    "#2f6e4a";
-
-
+    message.style.color="#2f6e4a";
 
 
 
     setTimeout(()=>{
 
 
-        if(member.role === "moderator"){
-
-
-            window.location.href =
-            "moderator-dashboard.html";
-
-
-        }
-
-
-
-        else if(member.role === "beta_tester"){
-
-
-            window.location.href =
-            "beta-dashboard.html";
-
-
-        }
-
-
-
-        else{
-
-
-            window.location.href =
-            "team-dashboard.html";
-
-
-        }
-
+        window.location.href =
+        "team-dashboard.html";
 
 
     },800);
-
 
 
 
