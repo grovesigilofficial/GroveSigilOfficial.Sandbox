@@ -1,6 +1,10 @@
 console.log("user-dashboard loaded");
 
 
+const usernameDisplay =
+document.getElementById("username");
+
+
 const emailDisplay =
 document.getElementById("user-email");
 
@@ -20,20 +24,64 @@ async function checkUser(){
 
     if(error || !data.session){
 
+
         window.location.href =
         "login.html";
 
+
         return;
+
 
     }
 
 
 
+    const user =
+    data.session.user;
+
+
+
     emailDisplay.textContent =
-    "Signed in as: " + data.session.user.email;
+    "Email: " + user.email;
+
+
+
+    const { data: profile, error: profileError } =
+    await window.groveClient
+    .from("profiles")
+    .select("username")
+    .eq("user_id", user.id)
+    .single();
+
+
+
+    if(profileError){
+
+
+        console.error(
+            "Profile loading error:",
+            profileError
+        );
+
+
+        usernameDisplay.textContent =
+        "Welcome to Grove";
+
+
+        return;
+
+
+    }
+
+
+
+    usernameDisplay.textContent =
+    "Welcome, " + profile.username;
+
 
 
 }
+
 
 
 
@@ -47,9 +95,15 @@ logoutButton.addEventListener("click", async ()=>{
 
     if(error){
 
-        console.error("Logout error:", error);
+
+        console.error(
+            "Logout error:",
+            error
+        );
+
 
         return;
+
 
     }
 
@@ -60,6 +114,7 @@ logoutButton.addEventListener("click", async ()=>{
 
 
 });
+
 
 
 
