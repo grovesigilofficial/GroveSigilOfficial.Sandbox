@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Complete Profile • Grove</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    background:#0b0f0d;
+    color:#d8ddd9;
+    font-family:Arial,Helvetica,sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+.container{
+
+    width:380px;
+
+    background:#101512;
+
+    border:1px solid #232b27;
+
+    border-radius:12px;
+
+    padding:35px;
+
+}
+
+h1{
+
+    color:#2f6e4a;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+p{
+
+    color:#8f9893;
+
+    margin-bottom:20px;
+
+    line-height:1.5;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:20px;
+
+    background:#0b0f0d;
+
+    border:1px solid #232b27;
+
+    border-radius:8px;
+
+    color:white;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#2f6e4a;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+button:hover{
+
+    opacity:.85;
+
+}
+
+.message{
+
+    margin-top:15px;
+
+    text-align:center;
+
+    color:#8f9893;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+Complete Your Profile
+</h1>
+
+<p>
+
+Choose your Grove username.
+
+</p>
+
+<input
+id="username"
+type="text"
+placeholder="Username">
+
+<button id="finish">
+
+Enter Grove
+
+</button>
+
+<div
+id="message"
+class="message">
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+<script src="js/complete-profile.js"></script>
+
+</body>
+
+</html>
