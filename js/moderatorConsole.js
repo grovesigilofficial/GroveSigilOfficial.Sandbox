@@ -1,13 +1,13 @@
 console.log("moderatorConsole loaded");
 
-
 const applications =
 document.getElementById("applications");
 
 
-
 async function loadApplications(){
 
+    applications.innerHTML =
+    "Loading applications...";
 
     const { data, error } =
     await window.groveClient
@@ -16,45 +16,43 @@ async function loadApplications(){
     .order("created_at",{ascending:false});
 
 
-
     if(error){
 
         console.error("Load error:", error);
 
-        applications.innerHTML = error.message;
+        applications.innerHTML =
+        "Error: " + error.message;
 
         return;
 
     }
-
 
 
     if(!data || data.length === 0){
 
-        applications.innerHTML = "No applications found.";
+        applications.innerHTML =
+        "No applications found.";
 
         return;
 
     }
-
 
 
     applications.innerHTML = "";
 
 
-
-    data.forEach(app => {
-
-
-        const card = document.createElement("div");
+    data.forEach(app=>{
 
 
-        card.className = "card";
+        const card =
+        document.createElement("div");
 
+
+        card.className =
+        "card";
 
 
         let buttons = "";
-
 
 
         if(app.status === "pending"){
@@ -74,7 +72,6 @@ async function loadApplications(){
         }
 
 
-
         if(app.status === "approved"){
 
             buttons = `
@@ -88,30 +85,17 @@ async function loadApplications(){
         }
 
 
-
         card.innerHTML = `
 
-        <p>
-        <b>Email:</b> ${app.email}
-        </p>
+        <p><b>Email:</b> ${app.email}</p>
 
-        <p>
-        <b>Username:</b> ${app.username}
-        </p>
+        <p><b>Username:</b> ${app.username}</p>
 
-        <p>
-        <b>Role:</b> ${app.role}
-        </p>
+        <p><b>Role:</b> ${app.role}</p>
 
-        <p>
-        <b>Reason:</b> ${app.reason}
-        </p>
+        <p><b>Reason:</b> ${app.reason}</p>
 
-        <p class="status">
-        Status: ${app.status}
-        </p>
-
-        <br>
+        <p><b>Status:</b> ${app.status}</p>
 
         ${buttons}
 
@@ -131,22 +115,16 @@ async function loadApplications(){
 
 async function updateApplication(id,status){
 
-
     const { error } =
     await window.groveClient
     .from("moderator_applications")
     .update({
-
-        status: status
-
+        status:status
     })
     .eq("id",id);
 
 
-
     if(error){
-
-        console.error(error);
 
         alert(error.message);
 
@@ -155,34 +133,60 @@ async function updateApplication(id,status){
     }
 
 
-
-    alert("Application updated");
-
-
     loadApplications();
-
 
 }
 
 
 
 
-
-
 async function addToTeam(id){
-
-
-    console.log("ADD TO TEAM CLICKED:", id);
-
-
 
     const { data: application, error } =
     await window.groveClient
     .from("moderator_applications")
     .select("*")
-    .eq("id", id)
+    .eq("id",id)
     .single();
 
 
+    if(error){
 
-    console.log("APPLICATION:",
+        alert(error.message);
+
+        return;
+
+    }
+
+
+    const { error: insertError } =
+    await window.groveClient
+    .from("team_members")
+    .insert({
+
+        user_id: application.user_id,
+
+        email: application.email,
+
+        username: application.username,
+
+        role: application.role
+
+    });
+
+
+    if(insertError){
+
+        alert(insertError.message);
+
+        return;
+
+    }
+
+
+    alert("Added to Grove Team.");
+
+}
+
+
+loadApplications();
