@@ -8,6 +8,7 @@
 
 <title>Console • Grove</title>
 
+
 <style>
 
 *{
@@ -16,14 +17,18 @@
     box-sizing:border-box;
 }
 
+
 :root{
+
     --bg:#0b0f0d;
     --card:#111614;
     --border:#232b27;
     --accent:#2f6e4a;
     --text:#ffffff;
     --muted:#8f9893;
+
 }
+
 
 
 body{
@@ -37,12 +42,15 @@ body{
 }
 
 
+
+
 .container{
 
     max-width:900px;
     margin:auto;
 
 }
+
 
 
 
@@ -57,15 +65,19 @@ header{
 
 
 
+
 h1{
 
     color:var(--accent);
 
     text-shadow:
+
     0 0 8px rgba(47,110,74,.45),
     0 0 18px rgba(47,110,74,.20);
 
 }
+
+
 
 
 
@@ -90,6 +102,8 @@ button:hover{
 
 
 
+
+
 .card{
 
     background:var(--card);
@@ -102,6 +116,7 @@ button:hover{
 
 
 
+
 .card h2{
 
     margin-bottom:15px;
@@ -110,11 +125,15 @@ button:hover{
 
 
 
+
+
 .card p{
 
     color:var(--muted);
 
 }
+
+
 
 
 
@@ -133,11 +152,15 @@ textarea{
 
 
 
+
+
 textarea{
 
     min-height:100px;
 
 }
+
+
 
 
 
@@ -152,11 +175,35 @@ textarea{
 
 
 
+
+
+.task h3{
+
+    margin-bottom:10px;
+
+}
+
+
+
+
+
+.task p{
+
+    margin-bottom:10px;
+
+}
+
+
+
+
+
 .task.completed{
 
     opacity:.55;
 
 }
+
+
 
 
 
@@ -168,6 +215,8 @@ textarea{
 
 
 
+
+
 .task-buttons button{
 
     margin-right:8px;
@@ -175,22 +224,38 @@ textarea{
 }
 
 
+
+
+.section-note{
+
+    margin-bottom:15px;
+
+}
+
+
+
 </style>
 
+
 </head>
+
 
 
 <body>
 
 
+
 <div class="container">
+
 
 
 <header>
 
+
 <h1>
 Grove Console
 </h1>
+
 
 
 <button id="logout">
@@ -198,53 +263,86 @@ Logout
 </button>
 
 
+
 </header>
+
+
+
 
 
 
 
 <div class="card">
 
+
 <h2>
 Welcome, Architect.
 </h2>
 
+
 <p>
 Private Grove administration console.
 </p>
+
+
 
 </div>
 
 
 
 
+
+
+
+
 <div class="card">
+
 
 <h2>
 Tasks
 </h2>
 
 
-<input id="task-title" placeholder="Task title">
+
+<input 
+id="task-title"
+placeholder="Task title">
 
 
-<textarea 
+
+
+
+<textarea
 id="task-description"
 placeholder="Task description">
 </textarea>
 
 
+
+
+
 <button id="add-task">
+
 Add Task
+
 </button>
 
 
+
+
 <div id="tasks">
+
 Loading tasks...
+
 </div>
 
 
+
 </div>
+
+
+
+
 
 
 
@@ -252,33 +350,89 @@ Loading tasks...
 
 <div class="card">
 
+
+<h2>
+Suggestion Inbox
+</h2>
+
+
+
+<p class="section-note">
+
+Ideas and feedback submitted by Grove users.
+
+</p>
+
+
+
+<div id="feedback">
+
+Loading suggestions...
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
 <h2>
 Moderator Applications
 </h2>
 
 
+
+
 <p>
+
 Review beta testers, moderators, and contributors joining Grove.
+
 </p>
+
 
 
 <br>
 
 
+
 <a href="moderator-console.html">
 
+
 <button>
+
 Open Applications
+
 </button>
+
 
 </a>
 
 
+
+</div>
+
+
+
+
+
+
+
 </div>
 
 
 
-</div>
+
+
 
 
 
@@ -290,6 +444,7 @@ Open Applications
 <script src="js/console.js"></script>
 
 
+
 </body>
 
-    </html>
+</html>
