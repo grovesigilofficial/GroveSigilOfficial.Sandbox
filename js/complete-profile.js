@@ -35,7 +35,6 @@ async function checkSession(){
     }
 
 
-
 }
 
 
@@ -43,8 +42,13 @@ async function checkSession(){
 finishButton.addEventListener("click", async ()=>{
 
 
-    const username =
+    let username =
     usernameInput.value.trim();
+
+
+
+    username =
+    username.replace(/\s+/g, "_");
 
 
 
@@ -62,8 +66,79 @@ finishButton.addEventListener("click", async ()=>{
 
 
 
+    if(username.length < 3){
+
+
+        message.textContent =
+        "Username must be at least 3 characters.";
+
+
+        return;
+
+
+    }
+
+
+
+    if(username.length > 20){
+
+
+        message.textContent =
+        "Username must be under 20 characters.";
+
+
+        return;
+
+
+    }
+
+
+
     message.textContent =
-    "Creating profile...";
+    "Checking username...";
+
+
+
+    const { data: existingUser, error: usernameError } =
+    await window.groveClient
+    .from("profiles")
+    .select("username")
+    .eq("username", username)
+    .maybeSingle();
+
+
+
+    if(usernameError){
+
+
+        console.error(
+            "Username check error:",
+            usernameError
+        );
+
+
+        message.textContent =
+        usernameError.message;
+
+
+        return;
+
+
+    }
+
+
+
+    if(existingUser){
+
+
+        message.textContent =
+        "Username already taken.";
+
+
+        return;
+
+
+    }
 
 
 
@@ -88,6 +163,11 @@ finishButton.addEventListener("click", async ()=>{
 
     const user =
     sessionData.session.user;
+
+
+
+    message.textContent =
+    "Creating profile...";
 
 
 
