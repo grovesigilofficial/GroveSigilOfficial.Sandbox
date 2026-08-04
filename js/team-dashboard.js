@@ -18,6 +18,39 @@ document.getElementById("logout");
 
 
 
+async function updateLastSeen(userId){
+
+
+    const { error } =
+    await window.groveClient
+    .from("team_members")
+    .update({
+
+        last_seen: new Date().toISOString()
+
+    })
+    .eq(
+        "user_id",
+        userId
+    );
+
+
+
+    if(error){
+
+        console.error(
+            "Last seen update error:",
+            error
+        );
+
+    }
+
+
+}
+
+
+
+
 
 async function loadTeamMember(){
 
@@ -50,8 +83,12 @@ async function loadTeamMember(){
     await window.groveClient
     .from("team_members")
     .select("*")
-    .eq("user_id", user.id)
+    .eq(
+        "user_id",
+        user.id
+    )
     .single();
+
 
 
 
@@ -80,6 +117,7 @@ async function loadTeamMember(){
 
 
 
+
     nameDisplay.textContent =
     "Welcome, " + member.username;
 
@@ -92,6 +130,21 @@ async function loadTeamMember(){
 
     roleDisplay.textContent =
     "Role: " + member.role;
+
+
+
+    await updateLastSeen(user.id);
+
+
+
+
+    setInterval(()=>{
+
+
+        updateLastSeen(user.id);
+
+
+    },60000);
 
 
 
