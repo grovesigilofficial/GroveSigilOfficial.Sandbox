@@ -95,7 +95,7 @@ function updateStatus(lastSeen){
 
 
         onlineText.textContent =
-        "🟢 Online";
+        "Online";
 
 
     } else {
@@ -106,7 +106,7 @@ function updateStatus(lastSeen){
 
 
         onlineText.textContent =
-        "⚪ Offline";
+        "Offline";
 
 
     }
@@ -150,12 +150,10 @@ async function updateLastSeen(userId){
 
     if(error){
 
-
         console.error(
             "Last seen update error:",
             error
         );
-
 
     }
 
