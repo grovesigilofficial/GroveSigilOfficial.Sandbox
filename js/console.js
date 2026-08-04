@@ -4,17 +4,26 @@ console.log("console.js loaded");
 const logoutButton =
 document.getElementById("logout");
 
+
 const addTaskButton =
 document.getElementById("add-task");
+
 
 const taskTitle =
 document.getElementById("task-title");
 
+
 const taskDescription =
 document.getElementById("task-description");
 
+
 const tasksContainer =
 document.getElementById("tasks");
+
+
+const feedbackContainer =
+document.getElementById("feedback");
+
 
 
 
@@ -41,6 +50,7 @@ async function checkAuth(){
 
 
 
+
     if(!data.session){
 
         window.location.href =
@@ -58,10 +68,15 @@ async function checkAuth(){
     );
 
 
+
     loadTasks();
+
+    loadFeedback();
 
 
 }
+
+
 
 
 
@@ -103,6 +118,7 @@ async function loadTasks(){
 
 
 
+
     if(!data.length){
 
         tasksContainer.innerHTML =
@@ -111,6 +127,8 @@ async function loadTasks(){
         return;
 
     }
+
+
 
 
 
@@ -123,6 +141,7 @@ async function loadTasks(){
 
         const div =
         document.createElement("div");
+
 
 
         div.className =
@@ -192,8 +211,9 @@ async function loadTasks(){
     });
 
 
-
 }
+
+
 
 
 
@@ -208,8 +228,10 @@ async function addTask(){
     taskTitle.value.trim();
 
 
+
     const description =
     taskDescription.value.trim();
+
 
 
 
@@ -225,6 +247,8 @@ async function addTask(){
 
 
 
+
+
     const { error } =
     await window.groveClient
     .from("tasks")
@@ -235,6 +259,8 @@ async function addTask(){
         description:description
 
     });
+
+
 
 
 
@@ -255,15 +281,20 @@ async function addTask(){
 
 
 
+
+
     taskTitle.value = "";
 
     taskDescription.value = "";
+
 
 
     loadTasks();
 
 
 }
+
+
 
 
 
@@ -293,11 +324,10 @@ async function toggleTask(id, completed){
 
 
 
+
     if(error){
 
-        console.error(
-            error
-        );
+        console.error(error);
 
         return;
 
@@ -309,6 +339,8 @@ async function toggleTask(id, completed){
 
 
 }
+
+
 
 
 
@@ -335,6 +367,8 @@ async function editTask(id, oldTitle){
 
 
 
+
+
     const { error } =
     await window.groveClient
     .from("tasks")
@@ -353,11 +387,10 @@ async function editTask(id, oldTitle){
 
 
 
+
     if(error){
 
-        console.error(
-            error
-        );
+        console.error(error);
 
         return;
 
@@ -365,10 +398,13 @@ async function editTask(id, oldTitle){
 
 
 
+
     loadTasks();
 
 
 }
+
+
 
 
 
@@ -394,6 +430,7 @@ async function deleteTask(id){
 
 
 
+
     const { error } =
     await window.groveClient
     .from("tasks")
@@ -407,7 +444,242 @@ async function deleteTask(id){
 
     if(error){
 
+        console.error(error);
+
+        return;
+
+    }
+
+
+
+
+    loadTasks();
+
+
+}
+
+
+
+
+
+
+
+
+
+async function loadFeedback(){
+
+
+    if(!feedbackContainer){
+
+        return;
+
+    }
+
+
+
+
+
+    const { data, error } =
+    await window.groveClient
+    .from("feedback")
+    .select("*")
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+
+
+
+    if(error){
+
         console.error(
+            "Feedback error:",
+            error
+        );
+
+
+        feedbackContainer.innerHTML =
+        "<p>Unable to load suggestions.</p>";
+
+        return;
+
+    }
+
+
+
+
+
+
+    if(!data.length){
+
+
+        feedbackContainer.innerHTML =
+        "<p>No suggestions yet.</p>";
+
+        return;
+
+    }
+
+
+
+
+
+    feedbackContainer.innerHTML = "";
+
+
+
+
+
+    for(const item of data){
+
+
+
+        let username =
+        "Unknown User";
+
+
+
+        if(item.user_id){
+
+
+            const { data: profile } =
+            await window.groveClient
+            .from("profiles")
+            .select(
+                "username, display_name"
+            )
+            .eq(
+                "user_id",
+                item.user_id
+            )
+            .single();
+
+
+
+            if(profile){
+
+                username =
+                profile.display_name ||
+                profile.username;
+
+            }
+
+
+        }
+
+
+
+
+
+        const div =
+        document.createElement("div");
+
+
+
+        div.className =
+        "task";
+
+
+
+
+        div.innerHTML = `
+
+
+        <h3>
+        ${username}
+        </h3>
+
+
+
+        <p>
+        ${item.content}
+        </p>
+
+
+
+        <p>
+
+        ${new Date(item.created_at).toLocaleString()}
+
+        </p>
+
+
+
+        <div class="task-buttons">
+
+
+        <button onclick="deleteFeedback('${item.id}')">
+
+        Delete
+
+        </button>
+
+
+        </div>
+
+
+        `;
+
+
+
+        feedbackContainer.appendChild(div);
+
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function deleteFeedback(id){
+
+
+
+    const confirmed =
+    confirm(
+        "Delete this suggestion?"
+    );
+
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+
+
+
+    const { error } =
+    await window.groveClient
+    .from("feedback")
+    .delete()
+    .eq(
+        "id",
+        id
+    );
+
+
+
+
+    if(error){
+
+        console.error(
+            "Delete feedback error:",
             error
         );
 
@@ -417,10 +689,13 @@ async function deleteTask(id){
 
 
 
-    loadTasks();
+
+    loadFeedback();
 
 
 }
+
+
 
 
 
@@ -454,6 +729,7 @@ async ()=>{
 
 
 
+
     window.location.href =
     "console-login.html";
 
@@ -462,6 +738,8 @@ async ()=>{
 
 
 }
+
+
 
 
 
@@ -485,6 +763,7 @@ addTask
 
 
 
+
 window.toggleTask =
 toggleTask;
 
@@ -495,6 +774,11 @@ editTask;
 
 window.deleteTask =
 deleteTask;
+
+
+window.deleteFeedback =
+deleteFeedback;
+
 
 
 
