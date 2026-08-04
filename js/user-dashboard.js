@@ -35,6 +35,49 @@ let currentUser = null;
 
 
 
+async function updateLastSeen(){
+
+
+    if(!currentUser){
+
+        return;
+
+    }
+
+
+
+    const { error } =
+    await window.groveClient
+    .from("profiles")
+    .update({
+
+        last_seen: new Date()
+
+    })
+    .eq(
+        "user_id",
+        currentUser.id
+    );
+
+
+
+    if(error){
+
+        console.error(
+            "Last seen update error:",
+            error
+        );
+
+    }
+
+
+}
+
+
+
+
+
+
 async function checkUser(){
 
 
@@ -59,6 +102,10 @@ async function checkUser(){
 
     currentUser =
     data.session.user;
+
+
+
+    await updateLastSeen();
 
 
 
@@ -104,6 +151,9 @@ async function checkUser(){
 
 
 }
+
+
+
 
 
 
@@ -184,6 +234,8 @@ async function createPost(){
 
 
 }
+
+
 
 
 
@@ -323,6 +375,8 @@ createPostButton.addEventListener(
 
 
 
+
+
 logoutButton.addEventListener("click", async ()=>{
 
 
@@ -352,6 +406,7 @@ logoutButton.addEventListener("click", async ()=>{
 
 
 });
+
 
 
 
