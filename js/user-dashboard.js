@@ -13,6 +13,27 @@ const logoutButton =
 document.getElementById("logout");
 
 
+const postContent =
+document.getElementById("post-content");
+
+
+const createPostButton =
+document.getElementById("create-post");
+
+
+const postMessage =
+document.getElementById("post-message");
+
+
+const feed =
+document.getElementById("feed");
+
+
+
+let currentUser = null;
+
+
+
 
 async function checkUser(){
 
@@ -36,13 +57,13 @@ async function checkUser(){
 
 
 
-    const user =
+    currentUser =
     data.session.user;
 
 
 
     emailDisplay.textContent =
-    "Email: " + user.email;
+    "Email: " + currentUser.email;
 
 
 
@@ -50,7 +71,7 @@ async function checkUser(){
     await window.groveClient
     .from("profiles")
     .select("username")
-    .eq("user_id", user.id)
+    .eq("user_id", currentUser.id)
     .single();
 
 
@@ -68,6 +89,41 @@ async function checkUser(){
         "Welcome to Grove";
 
 
+    } else {
+
+
+        usernameDisplay.textContent =
+        "Welcome, " + profile.username;
+
+
+    }
+
+
+
+    loadPosts();
+
+
+}
+
+
+
+
+
+async function createPost(){
+
+
+    const content =
+    postContent.value.trim();
+
+
+
+    if(!content){
+
+
+        postMessage.textContent =
+        "Write something first.";
+
+
         return;
 
 
@@ -75,12 +131,194 @@ async function checkUser(){
 
 
 
-    usernameDisplay.textContent =
-    "Welcome, " + profile.username;
+    postMessage.textContent =
+    "Posting...";
+
+
+
+    const { error } =
+    await window.groveClient
+    .from("posts")
+    .insert({
+
+
+        user_id: currentUser.id,
+
+        content: content
+
+
+    });
+
+
+
+    if(error){
+
+
+        console.error(
+            "Post error:",
+            error
+        );
+
+
+        postMessage.textContent =
+        error.message;
+
+
+        return;
+
+
+    }
+
+
+
+    postContent.value = "";
+
+
+    postMessage.textContent =
+    "Posted to Grove.";
+
+
+
+    loadPosts();
 
 
 
 }
+
+
+
+
+
+
+
+async function loadPosts(){
+
+
+    const { data, error } =
+    await window.groveClient
+    .from("posts")
+    .select(`
+
+        id,
+
+        content,
+
+        created_at,
+
+        profiles(
+            username
+        )
+
+    `)
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+
+
+    if(error){
+
+
+        console.error(
+            "Feed error:",
+            error
+        );
+
+
+        feed.innerHTML =
+        "<p>Unable to load feed.</p>";
+
+
+        return;
+
+
+    }
+
+
+
+    if(!data.length){
+
+
+        feed.innerHTML =
+        "<p>No posts yet. Be the first in Grove.</p>";
+
+
+        return;
+
+
+    }
+
+
+
+    feed.innerHTML = "";
+
+
+
+    data.forEach(post=>{
+
+
+        const div =
+        document.createElement("div");
+
+
+        div.className =
+        "post";
+
+
+
+        div.innerHTML = `
+
+
+        <p>
+
+        <strong>
+        ${post.profiles?.username || "Unknown"}
+        </strong>
+
+        </p>
+
+
+        <p>
+
+        ${post.content}
+
+        </p>
+
+
+        <p class="post-time">
+
+        ${new Date(post.created_at).toLocaleString()}
+
+        </p>
+
+
+        `;
+
+
+
+        feed.appendChild(div);
+
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+createPostButton.addEventListener(
+    "click",
+    createPost
+);
 
 
 
@@ -114,6 +352,7 @@ logoutButton.addEventListener("click", async ()=>{
 
 
 });
+
 
 
 
