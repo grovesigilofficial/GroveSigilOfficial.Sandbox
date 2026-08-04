@@ -30,7 +30,22 @@ document.getElementById("feed");
 
 
 
+const suggestionContent =
+document.getElementById("suggestion-content");
+
+
+const sendSuggestionButton =
+document.getElementById("send-suggestion");
+
+
+const suggestionMessage =
+document.getElementById("suggestion-message");
+
+
+
 let currentUser = null;
+
+
 
 
 
@@ -51,7 +66,7 @@ async function updateLastSeen(){
     .from("profiles")
     .update({
 
-        last_seen: new Date()
+        last_seen:new Date()
 
     })
     .eq(
@@ -72,6 +87,9 @@ async function updateLastSeen(){
 
 
 }
+
+
+
 
 
 
@@ -114,12 +132,18 @@ async function checkUser(){
 
 
 
+
+
     const { data: profile, error: profileError } =
     await window.groveClient
     .from("profiles")
     .select("username")
-    .eq("user_id", currentUser.id)
+    .eq(
+        "user_id",
+        currentUser.id
+    )
     .single();
+
 
 
 
@@ -159,6 +183,7 @@ async function checkUser(){
 
 
 
+
 async function createPost(){
 
 
@@ -186,18 +211,22 @@ async function createPost(){
 
 
 
+
+
     const { error } =
     await window.groveClient
     .from("posts")
     .insert({
 
+        user_id:
+        currentUser.id,
 
-        user_id: currentUser.id,
-
-        content: content
-
+        content:
+        content
 
     });
+
+
 
 
 
@@ -221,7 +250,10 @@ async function createPost(){
 
 
 
+
+
     postContent.value = "";
+
 
 
     postMessage.textContent =
@@ -230,6 +262,95 @@ async function createPost(){
 
 
     loadPosts();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function sendSuggestion(){
+
+
+    const content =
+    suggestionContent.value.trim();
+
+
+
+    if(!content){
+
+
+        suggestionMessage.textContent =
+        "Write a suggestion first.";
+
+
+        return;
+
+
+    }
+
+
+
+    suggestionMessage.textContent =
+    "Sending...";
+
+
+
+
+
+    const { error } =
+    await window.groveClient
+    .from("feedback")
+    .insert({
+
+        user_id:
+        currentUser.id,
+
+        content:
+        content
+
+    });
+
+
+
+
+
+    if(error){
+
+
+        console.error(
+            "Suggestion error:",
+            error
+        );
+
+
+        suggestionMessage.textContent =
+        error.message;
+
+
+        return;
+
+
+    }
+
+
+
+
+
+    suggestionContent.value = "";
+
+
+
+    suggestionMessage.textContent =
+    "Suggestion sent to Grove.";
+
+
 
 
 
@@ -271,6 +392,8 @@ async function loadPosts(){
 
 
 
+
+
     if(error){
 
 
@@ -291,6 +414,8 @@ async function loadPosts(){
 
 
 
+
+
     if(!data.length){
 
 
@@ -305,7 +430,11 @@ async function loadPosts(){
 
 
 
+
+
     feed.innerHTML = "";
+
+
 
 
 
@@ -316,13 +445,13 @@ async function loadPosts(){
         document.createElement("div");
 
 
+
         div.className =
         "post";
 
 
 
         div.innerHTML = `
-
 
         <p>
 
@@ -334,9 +463,7 @@ async function loadPosts(){
 
 
         <p>
-
         ${post.content}
-
         </p>
 
 
@@ -345,7 +472,6 @@ async function loadPosts(){
         ${new Date(post.created_at).toLocaleString()}
 
         </p>
-
 
         `;
 
@@ -367,9 +493,11 @@ async function loadPosts(){
 
 
 
+
+
 createPostButton.addEventListener(
-    "click",
-    createPost
+"click",
+createPost
 );
 
 
@@ -377,7 +505,28 @@ createPostButton.addEventListener(
 
 
 
-logoutButton.addEventListener("click", async ()=>{
+if(sendSuggestionButton){
+
+
+    sendSuggestionButton.addEventListener(
+    "click",
+    sendSuggestion
+    );
+
+
+}
+
+
+
+
+
+
+
+
+
+logoutButton.addEventListener(
+"click",
+async ()=>{
 
 
     const { error } =
@@ -406,6 +555,7 @@ logoutButton.addEventListener("click", async ()=>{
 
 
 });
+
 
 
 
