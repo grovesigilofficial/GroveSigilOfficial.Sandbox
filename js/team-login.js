@@ -1,46 +1,104 @@
 console.log("team-login loaded");
 
 
-const email =
+const emailInput =
 document.getElementById("email");
 
-const password =
+
+const passwordInput =
 document.getElementById("password");
 
-const login =
+
+const loginButton =
 document.getElementById("login");
+
 
 const message =
 document.getElementById("message");
 
 
 
-login.addEventListener("click", async ()=>{
+
+loginButton.addEventListener("click", async ()=>{
 
 
-    const { data, error } =
-    await window.groveClient.auth.signInWithPassword({
+    const email =
+    emailInput.value.trim();
 
-        email: email.value,
 
-        password: password.value
-
-    });
+    const password =
+    passwordInput.value;
 
 
 
-    if(error){
+    if(!email || !password){
 
-        message.textContent = error.message;
-        message.style.color="#ff5555";
+
+        message.textContent =
+        "Enter email and password.";
+
+
+        message.style.color =
+        "#ff5555";
+
 
         return;
+
 
     }
 
 
 
-    const user = data.user;
+    message.textContent =
+    "Logging in...";
+
+
+    message.style.color =
+    "#8f9893";
+
+
+
+
+    const { data, error } =
+    await window.groveClient.auth.signInWithPassword({
+
+        email,
+
+        password
+
+    });
+
+
+
+
+    if(error){
+
+
+        console.error(
+            "Login error:",
+            error
+        );
+
+
+        message.textContent =
+        error.message;
+
+
+        message.style.color =
+        "#ff5555";
+
+
+        return;
+
+
+    }
+
+
+
+
+    const user =
+    data.user;
+
 
 
 
@@ -48,52 +106,94 @@ login.addEventListener("click", async ()=>{
     await window.groveClient
     .from("team_members")
     .select("*")
-    .eq("email", user.email)
+    .eq(
+        "email",
+        user.email
+    )
     .single();
 
 
 
-    if(memberError){
+
+
+    if(memberError || !member){
+
+
+        console.error(
+            "Team lookup error:",
+            memberError
+        );
+
 
         message.textContent =
         "You are not approved for Grove Team access.";
 
-        message.style.color="#ff5555";
+
+        message.style.color =
+        "#ff5555";
+
+
 
         await window.groveClient.auth.signOut();
 
+
         return;
 
+
     }
+
 
 
 
     message.textContent =
-    "Welcome to Grove.";
-
-    message.style.color="#2f6e4a";
+    "Welcome to Grove Team.";
 
 
-
-    if(member.role === "beta_tester"){
-
-        window.location.href="beta-dashboard.html";
-
-    }
+    message.style.color =
+    "#2f6e4a";
 
 
-    else if(member.role === "moderator"){
-
-        window.location.href="moderator-dashboard.html";
-
-    }
 
 
-    else{
 
-        window.location.href="team-dashboard.html";
+    setTimeout(()=>{
 
-    }
+
+        if(member.role === "moderator"){
+
+
+            window.location.href =
+            "moderator-dashboard.html";
+
+
+        }
+
+
+
+        else if(member.role === "beta_tester"){
+
+
+            window.location.href =
+            "beta-dashboard.html";
+
+
+        }
+
+
+
+        else{
+
+
+            window.location.href =
+            "team-dashboard.html";
+
+
+        }
+
+
+
+    },800);
+
 
 
 
