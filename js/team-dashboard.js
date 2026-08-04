@@ -19,13 +19,11 @@ document.getElementById("logout");
 
 
 
-
 async function loadTeamMember(){
 
 
     const { data, error } =
     await window.groveClient.auth.getSession();
-
 
 
 
@@ -43,12 +41,8 @@ async function loadTeamMember(){
 
 
 
-
-
     const user =
     data.session.user;
-
-
 
 
 
@@ -56,12 +50,8 @@ async function loadTeamMember(){
     await window.groveClient
     .from("team_members")
     .select("*")
-    .eq(
-        "email",
-        user.email
-    )
+    .eq("user_id", user.id)
     .single();
-
 
 
 
@@ -90,10 +80,8 @@ async function loadTeamMember(){
 
 
 
-
     nameDisplay.textContent =
     "Welcome, " + member.username;
-
 
 
 
@@ -102,10 +90,8 @@ async function loadTeamMember(){
 
 
 
-
     roleDisplay.textContent =
     "Role: " + member.role;
-
 
 
 
@@ -126,7 +112,6 @@ async ()=>{
 
 
 
-
     if(error){
 
 
@@ -144,10 +129,8 @@ async ()=>{
 
 
 
-
     window.location.href =
     "index.html";
-
 
 
 });
