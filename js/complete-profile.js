@@ -14,6 +14,11 @@ document.getElementById("message");
 
 
 
+let currentUser = null;
+
+
+
+
 async function checkSession(){
 
 
@@ -29,17 +34,86 @@ async function checkSession(){
         "login.html";
 
 
-        return;
+        return false;
 
 
     }
+
+
+
+    currentUser =
+    data.session.user;
+
+
+
+    const { data: profile, error: profileError } =
+    await window.groveClient
+    .from("profiles")
+    .select("id")
+    .eq("user_id", currentUser.id)
+    .maybeSingle();
+
+
+
+    if(profileError){
+
+
+        console.error(
+            "Profile check error:",
+            profileError
+        );
+
+
+        return false;
+
+
+    }
+
+
+
+    if(profile){
+
+
+        window.location.href =
+        "user-dashboard.html";
+
+
+        return false;
+
+
+    }
+
+
+
+    return true;
 
 
 }
 
 
 
+
+
 finishButton.addEventListener("click", async ()=>{
+
+
+    if(!currentUser){
+
+
+        const allowed =
+        await checkSession();
+
+
+        if(!allowed){
+
+            return;
+
+        }
+
+
+    }
+
+
 
 
     let username =
@@ -48,7 +122,7 @@ finishButton.addEventListener("click", async ()=>{
 
 
     username =
-    username.replace(/\s+/g, "_");
+    username.replace(/\s+/g,"_");
 
 
 
@@ -99,12 +173,16 @@ finishButton.addEventListener("click", async ()=>{
 
 
 
+
+
     const { data: existingUser, error: usernameError } =
     await window.groveClient
     .from("profiles")
-    .select("username")
+    .select("id")
     .eq("username", username)
     .maybeSingle();
+
+
 
 
 
@@ -128,6 +206,7 @@ finishButton.addEventListener("click", async ()=>{
 
 
 
+
     if(existingUser){
 
 
@@ -142,32 +221,12 @@ finishButton.addEventListener("click", async ()=>{
 
 
 
-    const { data: sessionData, error: sessionError } =
-    await window.groveClient.auth.getSession();
-
-
-
-    if(sessionError || !sessionData.session){
-
-
-        window.location.href =
-        "login.html";
-
-
-        return;
-
-
-    }
-
-
-
-    const user =
-    sessionData.session.user;
-
 
 
     message.textContent =
     "Creating profile...";
+
+
 
 
 
@@ -177,12 +236,14 @@ finishButton.addEventListener("click", async ()=>{
     .insert({
 
 
-        user_id: user.id,
+        user_id: currentUser.id,
 
         username: username
 
 
     });
+
+
 
 
 
@@ -206,8 +267,12 @@ finishButton.addEventListener("click", async ()=>{
 
 
 
+
+
     message.textContent =
     "Profile created. Entering Grove...";
+
+
 
 
 
@@ -223,6 +288,8 @@ finishButton.addEventListener("click", async ()=>{
 
 
 });
+
+
 
 
 
