@@ -50,6 +50,91 @@ let currentUser = null;
 
 
 
+
+function getUserStatus(lastSeen){
+
+
+    if(!lastSeen){
+
+        return "● Offline";
+
+    }
+
+
+
+    const now =
+    new Date();
+
+
+
+    const last =
+    new Date(lastSeen);
+
+
+
+    const difference =
+    now - last;
+
+
+
+    const minutes =
+    Math.floor(
+        difference / 60000
+    );
+
+
+
+    if(minutes < 5){
+
+        return "● Active";
+
+    }
+
+
+
+    if(minutes < 60){
+
+        return `● Last seen ${minutes} minutes ago`;
+
+    }
+
+
+
+    const hours =
+    Math.floor(
+        minutes / 60
+    );
+
+
+
+    if(hours < 24){
+
+        return `● Last seen ${hours} hour${hours === 1 ? "" : "s"} ago`;
+
+    }
+
+
+
+    const days =
+    Math.floor(
+        hours / 24
+    );
+
+
+
+    return `● Last seen ${days} day${days === 1 ? "" : "s"} ago`;
+
+
+}
+
+
+
+
+
+
+
+
+
 async function updateLastSeen(){
 
 
@@ -143,6 +228,7 @@ async function checkUser(){
         currentUser.id
     )
     .single();
+
 
 
 
@@ -252,6 +338,8 @@ async function createPost(){
 
 
 
+
+
     postContent.value = "";
 
 
@@ -261,7 +349,11 @@ async function createPost(){
 
 
 
+
+
     loadPosts();
+
+
 
 
 
@@ -343,12 +435,15 @@ async function sendSuggestion(){
 
 
 
+
+
     suggestionContent.value = "";
 
 
 
     suggestionMessage.textContent =
     "Suggestion sent to Grove.";
+
 
 
 
@@ -379,7 +474,11 @@ async function loadPosts(){
         created_at,
 
         profiles(
-            username
+
+            username,
+
+            last_seen
+
         )
 
     `)
@@ -389,6 +488,8 @@ async function loadPosts(){
             ascending:false
         }
     );
+
+
 
 
 
@@ -416,6 +517,9 @@ async function loadPosts(){
 
 
 
+
+
+
     if(!data.length){
 
 
@@ -432,7 +536,11 @@ async function loadPosts(){
 
 
 
+
+
+
     feed.innerHTML = "";
+
 
 
 
@@ -451,13 +559,30 @@ async function loadPosts(){
 
 
 
+        const username =
+        post.profiles?.username ||
+        "Unknown";
+
+
+
+        const status =
+        getUserStatus(
+            post.profiles?.last_seen
+        );
+
+
+
         div.innerHTML = `
 
         <p>
 
         <strong>
-        ${post.profiles?.username || "Unknown"}
+        ${username}
         </strong>
+
+        <span class="user-status">
+        ${status}
+        </span>
 
         </p>
 
@@ -485,6 +610,8 @@ async function loadPosts(){
 
 
 
+
+
 }
 
 
@@ -499,6 +626,7 @@ createPostButton.addEventListener(
 "click",
 createPost
 );
+
 
 
 
@@ -555,6 +683,8 @@ async ()=>{
 
 
 });
+
+
 
 
 
