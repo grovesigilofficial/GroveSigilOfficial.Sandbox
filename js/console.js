@@ -28,6 +28,29 @@ document.getElementById("feedback");
 
 
 
+function formatGroveTime(timestamp){
+
+    if(!timestamp){
+
+        return "Unknown time";
+
+    }
+
+
+    return new Date(timestamp).toLocaleString(
+        undefined,
+        {
+            dateStyle:"medium",
+            timeStyle:"short"
+        }
+    );
+
+}
+
+
+
+
+
 
 async function checkAuth(){
 
@@ -51,6 +74,7 @@ async function checkAuth(){
 
 
 
+
     if(!data.session){
 
         window.location.href =
@@ -59,6 +83,7 @@ async function checkAuth(){
         return;
 
     }
+
 
 
 
@@ -127,7 +152,6 @@ async function loadTasks(){
         return;
 
     }
-
 
 
 
@@ -205,7 +229,6 @@ async function loadTasks(){
 
 
         tasksContainer.appendChild(div);
-
 
 
     });
@@ -368,7 +391,6 @@ async function editTask(id, oldTitle){
 
 
 
-
     const { error } =
     await window.groveClient
     .from("tasks")
@@ -442,6 +464,7 @@ async function deleteTask(id){
 
 
 
+
     if(error){
 
         console.error(error);
@@ -512,9 +535,7 @@ async function loadFeedback(){
 
 
 
-
     if(!data.length){
-
 
         feedbackContainer.innerHTML =
         "<p>No suggestions yet.</p>";
@@ -526,7 +547,6 @@ async function loadFeedback(){
 
 
 
-
     feedbackContainer.innerHTML = "";
 
 
@@ -534,7 +554,6 @@ async function loadFeedback(){
 
 
     for(const item of data){
-
 
 
         let username =
@@ -573,7 +592,6 @@ async function loadFeedback(){
 
 
 
-
         const div =
         document.createElement("div");
 
@@ -581,7 +599,6 @@ async function loadFeedback(){
 
         div.className =
         "task";
-
 
 
 
@@ -602,7 +619,7 @@ async function loadFeedback(){
 
         <p>
 
-        ${new Date(item.created_at).toLocaleString()}
+        ${formatGroveTime(item.created_at)}
 
         </p>
 
@@ -628,7 +645,6 @@ async function loadFeedback(){
         feedbackContainer.appendChild(div);
 
 
-
     }
 
 
@@ -644,7 +660,6 @@ async function loadFeedback(){
 
 
 async function deleteFeedback(id){
-
 
 
     const confirmed =
@@ -763,7 +778,6 @@ addTask
 
 
 
-
 window.toggleTask =
 toggleTask;
 
@@ -778,7 +792,6 @@ deleteTask;
 
 window.deleteFeedback =
 deleteFeedback;
-
 
 
 
