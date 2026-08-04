@@ -22,7 +22,7 @@ document.getElementById("message");
 
 
 
-signupButton.addEventListener("click", async () => {
+signupButton.addEventListener("click", async ()=>{
 
 
     const email =
@@ -47,6 +47,7 @@ signupButton.addEventListener("click", async () => {
 
         return;
 
+
     }
 
 
@@ -56,106 +57,51 @@ signupButton.addEventListener("click", async () => {
 
 
 
-    try {
+    const { data, error } =
+    await window.groveClient.auth.signUp({
 
 
-        const { data, error } =
-        await window.groveClient.auth.signUp({
+        email,
+
+        password
 
 
-            email: email,
-
-
-            password: password
-
-
-        });
+    });
 
 
 
-        if(error){
-
-
-            console.error("Supabase signup error:", error);
-
-
-            message.textContent =
-            error.message;
-
-
-            return;
-
-
-        }
-
-
-
-        if(data.user){
-
-
-
-            const { error: profileError } =
-            await window.groveClient
-            .from("profiles")
-            .insert({
-
-
-                user_id: data.user.id,
-
-                username: username
-
-
-            });
-
-
-
-            if(profileError){
-
-
-                console.error(
-                    "Profile creation error:",
-                    profileError
-                );
-
-
-                message.textContent =
-                profileError.message;
-
-
-                return;
-
-
-            }
-
-
-
-            message.textContent =
-            "✓ Account created. Check your email to confirm your account before logging in.";
-
-
-
-            emailInput.value = "";
-
-            usernameInput.value = "";
-
-            passwordInput.value = "";
-
-
-        }
-
-
-
-    } catch(error){
+    if(error){
 
 
         console.error(
-            "Signup failed:",
+            "Signup error:",
             error
         );
 
 
         message.textContent =
-        "Signup failed: " + error.message;
+        error.message;
+
+
+        return;
+
+
+    }
+
+
+
+    if(data.user){
+
+
+        message.textContent =
+        "✓ Account created. Check your email to confirm your account.";
+
+
+        emailInput.value = "";
+
+        usernameInput.value = "";
+
+        passwordInput.value = "";
 
 
     }
