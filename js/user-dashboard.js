@@ -40,11 +40,23 @@ async function checkUser(){
 logoutButton.addEventListener("click", async ()=>{
 
 
+    const { error } =
     await window.groveClient.auth.signOut();
 
 
+
+    if(error){
+
+        console.error("Logout error:", error);
+
+        return;
+
+    }
+
+
+
     window.location.href =
-    "login.html";
+    "index.html";
 
 
 });
