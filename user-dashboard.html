@@ -8,6 +8,7 @@
 
 <title>Grove • Home</title>
 
+
 <style>
 
 *{
@@ -28,12 +29,14 @@ body{
 }
 
 
+
 .container{
 
     max-width:900px;
     margin:auto;
 
 }
+
 
 
 header{
@@ -46,6 +49,7 @@ header{
 }
 
 
+
 h1{
 
     color:#2f6e4a;
@@ -55,6 +59,7 @@ h1{
     0 0 18px rgba(47,110,74,.20);
 
 }
+
 
 
 
@@ -71,6 +76,15 @@ button{
 
 
 
+button:hover{
+
+    opacity:.85;
+
+}
+
+
+
+
 .card{
 
     background:#101512;
@@ -83,6 +97,7 @@ button{
 
 
 
+
 .card h2{
 
     margin-bottom:12px;
@@ -91,11 +106,15 @@ button{
 
 
 
+
 .card p{
 
     color:#8f9893;
+    margin-bottom:8px;
 
 }
+
+
 
 
 .post{
@@ -107,7 +126,9 @@ button{
 }
 
 
+
 </style>
+
 
 </head>
 
@@ -118,60 +139,90 @@ button{
 <div class="container">
 
 
+
 <header>
+
 
 <h1>
 Grove
 </h1>
 
 
+
 <button id="logout">
+
 Logout
+
 </button>
+
 
 
 </header>
 
 
 
+
+
 <div class="card">
 
-<h2>
-Welcome to Grove
+
+<h2 id="username">
+
+Loading profile...
+
 </h2>
 
 
+
 <p id="user-email">
-Loading account...
+
+Loading email...
+
 </p>
+
 
 
 </div>
 
 
 
+
+
+
 <div class="card">
 
 
 <h2>
+
 Grove Feed
+
 </h2>
+
 
 
 <div class="post">
 
+
 <p>
+
 The Grove is growing. Your journey begins here.
+
 </p>
 
-</div>
-
 
 </div>
 
 
 
 </div>
+
+
+
+
+
+</div>
+
+
 
 
 
@@ -182,6 +233,7 @@ The Grove is growing. Your journey begins here.
 <script src="js/user-dashboard.js"></script>
 
 
+
 </body>
 
-  </html>
+</html>
