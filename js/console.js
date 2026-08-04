@@ -28,16 +28,32 @@ document.getElementById("feedback");
 
 
 
+
 function formatGroveTime(timestamp){
+
 
     if(!timestamp){
 
-        return "Unknown time";
+        return "No timestamp found";
 
     }
 
 
-    return new Date(timestamp).toLocaleString(
+
+    const date =
+    new Date(timestamp);
+
+
+
+    if(isNaN(date.getTime())){
+
+        return "Invalid timestamp";
+
+    }
+
+
+
+    return date.toLocaleString(
         undefined,
         {
             dateStyle:"medium",
@@ -45,7 +61,11 @@ function formatGroveTime(timestamp){
         }
     );
 
+
 }
+
+
+
 
 
 
@@ -70,7 +90,6 @@ async function checkAuth(){
         return;
 
     }
-
 
 
 
@@ -251,10 +270,8 @@ async function addTask(){
     taskTitle.value.trim();
 
 
-
     const description =
     taskDescription.value.trim();
-
 
 
 
@@ -267,7 +284,6 @@ async function addTask(){
         return;
 
     }
-
 
 
 
@@ -286,7 +302,6 @@ async function addTask(){
 
 
 
-
     if(error){
 
         console.error(
@@ -301,8 +316,6 @@ async function addTask(){
         return;
 
     }
-
-
 
 
 
@@ -344,7 +357,6 @@ async function toggleTask(id, completed){
         "id",
         id
     );
-
 
 
 
@@ -390,7 +402,6 @@ async function editTask(id, oldTitle){
 
 
 
-
     const { error } =
     await window.groveClient
     .from("tasks")
@@ -409,7 +420,6 @@ async function editTask(id, oldTitle){
 
 
 
-
     if(error){
 
         console.error(error);
@@ -417,7 +427,6 @@ async function editTask(id, oldTitle){
         return;
 
     }
-
 
 
 
@@ -464,7 +473,6 @@ async function deleteTask(id){
 
 
 
-
     if(error){
 
         console.error(error);
@@ -472,7 +480,6 @@ async function deleteTask(id){
         return;
 
     }
-
 
 
 
@@ -515,7 +522,6 @@ async function loadFeedback(){
 
 
 
-
     if(error){
 
         console.error(
@@ -534,7 +540,6 @@ async function loadFeedback(){
 
 
 
-
     if(!data.length){
 
         feedbackContainer.innerHTML =
@@ -543,6 +548,16 @@ async function loadFeedback(){
         return;
 
     }
+
+
+
+
+
+    console.log(
+        "Feedback data:",
+        data
+    );
+
 
 
 
@@ -592,6 +607,14 @@ async function loadFeedback(){
 
 
 
+
+        const timestamp =
+        item.created_at ||
+        item.timestamp ||
+        item.created;
+
+
+
         const div =
         document.createElement("div");
 
@@ -618,9 +641,7 @@ async function loadFeedback(){
 
 
         <p>
-
-        ${formatGroveTime(item.created_at)}
-
+        ${formatGroveTime(timestamp)}
         </p>
 
 
@@ -690,7 +711,6 @@ async function deleteFeedback(id){
 
 
 
-
     if(error){
 
         console.error(
@@ -701,7 +721,6 @@ async function deleteFeedback(id){
         return;
 
     }
-
 
 
 
