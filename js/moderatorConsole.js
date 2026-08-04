@@ -19,6 +19,8 @@ async function loadApplications(){
 
     if(error){
 
+        console.error("Load error:", error);
+
         applications.innerHTML = error.message;
 
         return;
@@ -27,7 +29,7 @@ async function loadApplications(){
 
 
 
-    if(!data.length){
+    if(!data || data.length === 0){
 
         applications.innerHTML = "No applications found.";
 
@@ -51,19 +53,17 @@ async function loadApplications(){
 
 
 
-        let actionButtons = "";
+        let buttons = "";
 
 
 
         if(app.status === "pending"){
 
-
-            actionButtons = `
+            buttons = `
 
             <button onclick="updateApplication('${app.id}','approved')">
             Approve
             </button>
-
 
             <button onclick="updateApplication('${app.id}','rejected')">
             Reject
@@ -71,15 +71,13 @@ async function loadApplications(){
 
             `;
 
-
         }
 
 
 
         if(app.status === "approved"){
 
-
-            actionButtons = `
+            buttons = `
 
             <button onclick="addToTeam('${app.id}')">
             Add To Grove Team
@@ -87,47 +85,37 @@ async function loadApplications(){
 
             `;
 
-
         }
 
 
 
         card.innerHTML = `
 
-
         <p>
         <b>Email:</b> ${app.email}
         </p>
-
 
         <p>
         <b>Username:</b> ${app.username}
         </p>
 
-
         <p>
         <b>Role:</b> ${app.role}
         </p>
-
 
         <p>
         <b>Reason:</b> ${app.reason}
         </p>
 
-
         <p class="status">
         Status: ${app.status}
         </p>
 
-
         <br>
 
-
-        ${actionButtons}
-
+        ${buttons}
 
         `;
-
 
 
         applications.appendChild(card);
@@ -137,7 +125,6 @@ async function loadApplications(){
 
 
 }
-
 
 
 
@@ -159,6 +146,8 @@ async function updateApplication(id,status){
 
     if(error){
 
+        console.error(error);
+
         alert(error.message);
 
         return;
@@ -167,9 +156,7 @@ async function updateApplication(id,status){
 
 
 
-    alert(
-        "Application updated: " + status
-    );
+    alert("Application updated");
 
 
     loadApplications();
@@ -185,6 +172,10 @@ async function updateApplication(id,status){
 async function addToTeam(id){
 
 
+    console.log("ADD TO TEAM CLICKED:", id);
+
+
+
     const { data: application, error } =
     await window.groveClient
     .from("moderator_applications")
@@ -194,55 +185,4 @@ async function addToTeam(id){
 
 
 
-    if(error){
-
-        alert(error.message);
-
-        return;
-
-    }
-
-
-
-
-    const { error: insertError } =
-    await window.groveClient
-    .from("team_members")
-    .insert([
-
-        {
-
-            email: application.email,
-
-            username: application.username,
-
-            role: application.role
-
-        }
-
-    ]);
-
-
-
-    if(insertError){
-
-        alert(insertError.message);
-
-        return;
-
-    }
-
-
-
-    alert(
-        application.username + " added to Grove Team!"
-    );
-
-
-}
-
-
-
-
-
-loadApplications();
+    console.log("APPLICATION:",
