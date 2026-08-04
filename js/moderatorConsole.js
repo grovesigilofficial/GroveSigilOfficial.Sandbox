@@ -1,7 +1,8 @@
 console.log("moderatorConsole loaded");
 
 
-const applications = document.getElementById("applications");
+const applications =
+document.getElementById("applications");
 
 
 
@@ -12,7 +13,6 @@ async function loadApplications(){
     await window.groveClient
     .from("moderator_applications")
     .select("*")
-    .eq("status", "pending")
     .order("created_at",{ascending:false});
 
 
@@ -29,7 +29,7 @@ async function loadApplications(){
 
     if(!data.length){
 
-        applications.innerHTML = "No pending applications.";
+        applications.innerHTML = "No applications found.";
 
         return;
 
@@ -50,7 +50,50 @@ async function loadApplications(){
         card.className = "card";
 
 
+
+        let actionButtons = "";
+
+
+
+        if(app.status === "pending"){
+
+
+            actionButtons = `
+
+            <button onclick="updateApplication('${app.id}','approved')">
+            Approve
+            </button>
+
+
+            <button onclick="updateApplication('${app.id}','rejected')">
+            Reject
+            </button>
+
+            `;
+
+
+        }
+
+
+
+        if(app.status === "approved"){
+
+
+            actionButtons = `
+
+            <button onclick="addToTeam('${app.id}')">
+            Add To Grove Team
+            </button>
+
+            `;
+
+
+        }
+
+
+
         card.innerHTML = `
+
 
         <p>
         <b>Email:</b> ${app.email}
@@ -80,14 +123,8 @@ async function loadApplications(){
         <br>
 
 
-        <button onclick="updateApplication('${app.id}','approved')">
-        Approve
-        </button>
+        ${actionButtons}
 
-
-        <button onclick="updateApplication('${app.id}','rejected')">
-        Reject
-        </button>
 
         `;
 
@@ -100,6 +137,7 @@ async function loadApplications(){
 
 
 }
+
 
 
 
@@ -138,6 +176,71 @@ async function updateApplication(id,status){
 
 
 }
+
+
+
+
+
+
+async function addToTeam(id){
+
+
+    const { data: application, error } =
+    await window.groveClient
+    .from("moderator_applications")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+
+
+
+    const { error: insertError } =
+    await window.groveClient
+    .from("team_members")
+    .insert([
+
+        {
+
+            email: application.email,
+
+            username: application.username,
+
+            role: application.role
+
+        }
+
+    ]);
+
+
+
+    if(insertError){
+
+        alert(insertError.message);
+
+        return;
+
+    }
+
+
+
+    alert(
+        application.username + " added to Grove Team!"
+    );
+
+
+}
+
 
 
 
