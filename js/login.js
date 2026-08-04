@@ -32,12 +32,17 @@ loginButton.addEventListener("click", async ()=>{
 
     if(!email || !password){
 
+
         message.textContent =
         "Please enter email and password.";
 
-        message.style.color = "#ff5555";
+
+        message.style.color =
+        "#ff5555";
+
 
         return;
+
 
     }
 
@@ -46,19 +51,24 @@ loginButton.addEventListener("click", async ()=>{
     message.textContent =
     "Logging in...";
 
-    message.style.color = "#8f9893";
+
+    message.style.color =
+    "#8f9893";
 
 
 
     try {
 
 
+
         const { data, error } =
         await window.groveClient.auth.signInWithPassword({
+
 
             email,
 
             password
+
 
         });
 
@@ -66,34 +76,101 @@ loginButton.addEventListener("click", async ()=>{
 
         if(error){
 
-            console.error("Login error:", error);
+
+            console.error(
+                "Login error:",
+                error
+            );
+
 
             message.textContent =
             error.message;
 
-            message.style.color = "#ff5555";
+
+            message.style.color =
+            "#ff5555";
+
 
             return;
+
 
         }
 
 
 
-        if(data.user){
+        const user =
+        data.user;
+
+
+
+        if(user){
+
+
+
+            const { data: profile, error: profileError } =
+            await window.groveClient
+            .from("profiles")
+            .select("id")
+            .eq("user_id", user.id)
+            .maybeSingle();
+
+
+
+
+
+            if(profileError){
+
+
+                console.error(
+                    "Profile check error:",
+                    profileError
+                );
+
+
+                message.textContent =
+                profileError.message;
+
+
+                return;
+
+
+            }
+
+
+
 
 
             message.textContent =
             "Login successful.";
 
-            message.style.color = "#2f6e4a";
+
+            message.style.color =
+            "#2f6e4a";
+
+
 
 
 
             setTimeout(()=>{
 
 
-                window.location.href =
-                "user-dashboard.html";
+
+                if(profile){
+
+
+                    window.location.href =
+                    "user-dashboard.html";
+
+
+                } else {
+
+
+                    window.location.href =
+                    "complete-profile.html";
+
+
+                }
+
 
 
             },800);
@@ -107,11 +184,15 @@ loginButton.addEventListener("click", async ()=>{
     } catch(err){
 
 
-        console.error("Login failed:", err);
+        console.error(
+            "Login failed:",
+            err
+        );
 
 
         message.textContent =
         err.message;
+
 
         message.style.color =
         "#ff5555";
