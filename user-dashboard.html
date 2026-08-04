@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Grove • Home</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body{
+
+    min-height:100vh;
+    background:#0b0f0d;
+    color:#d8ddd9;
+    font-family:Arial,Helvetica,sans-serif;
+    padding:40px;
+
+}
+
+
+.container{
+
+    max-width:900px;
+    margin:auto;
+
+}
+
+
+header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+
+}
+
+
+h1{
+
+    color:#2f6e4a;
+
+    text-shadow:
+    0 0 8px rgba(47,110,74,.45),
+    0 0 18px rgba(47,110,74,.20);
+
+}
+
+
+
+button{
+
+    background:#2f6e4a;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+
+}
+
+
+
+.card{
+
+    background:#101512;
+    border:1px solid #232b27;
+    border-radius:16px;
+    padding:30px;
+    margin-bottom:20px;
+
+}
+
+
+
+.card h2{
+
+    margin-bottom:12px;
+
+}
+
+
+
+.card p{
+
+    color:#8f9893;
+
+}
+
+
+.post{
+
+    border-top:1px solid #232b27;
+    padding-top:20px;
+    margin-top:20px;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<header>
+
+<h1>
+Grove
+</h1>
+
+
+<button id="logout">
+Logout
+</button>
+
+
+</header>
+
+
+
+<div class="card">
+
+<h2>
+Welcome to Grove
+</h2>
+
+
+<p id="user-email">
+Loading account...
+</p>
+
+
+</div>
+
+
+
+<div class="card">
+
+
+<h2>
+Grove Feed
+</h2>
+
+
+<div class="post">
+
+<p>
+The Grove is growing. Your journey begins here.
+</p>
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/user-dashboard.js"></script>
+
+
+</body>
+
+  </html>
