@@ -35,6 +35,7 @@ let currentUser = null;
 
 
 
+
 async function checkUser(){
 
 
@@ -109,6 +110,7 @@ async function checkUser(){
 
 
 
+
 async function createPost(){
 
 
@@ -141,11 +143,9 @@ async function createPost(){
     .from("posts")
     .insert({
 
-
         user_id: currentUser.id,
 
         content: content
-
 
     });
 
@@ -194,21 +194,14 @@ async function createPost(){
 async function loadPosts(){
 
 
-    const { data, error } =
+    const { data: posts, error } =
     await window.groveClient
     .from("posts")
     .select(`
-
         id,
-
+        user_id,
         content,
-
-        created_at,
-
-        profiles(
-            username
-        )
-
+        created_at
     `)
     .order(
         "created_at",
@@ -239,7 +232,7 @@ async function loadPosts(){
 
 
 
-    if(!data.length){
+    if(!posts.length){
 
 
         feed.innerHTML =
@@ -257,11 +250,26 @@ async function loadPosts(){
 
 
 
-    data.forEach(post=>{
+    for(const post of posts){
+
+
+        const { data: profile } =
+        await window.groveClient
+        .from("profiles")
+        .select("username")
+        .eq("user_id", post.user_id)
+        .maybeSingle();
+
+
+
+        const username =
+        profile?.username || "Unknown";
+
 
 
         const div =
         document.createElement("div");
+
 
 
         div.className =
@@ -271,29 +279,21 @@ async function loadPosts(){
 
         div.innerHTML = `
 
-
-        <p>
-
-        <strong>
-        ${post.profiles?.username || "Unknown"}
-        </strong>
-
-        </p>
+            <p>
+                <strong>
+                    ${username}
+                </strong>
+            </p>
 
 
-        <p>
-
-        ${post.content}
-
-        </p>
+            <p>
+                ${post.content}
+            </p>
 
 
-        <p class="post-time">
-
-        ${new Date(post.created_at).toLocaleString()}
-
-        </p>
-
+            <p class="post-time">
+                ${new Date(post.created_at).toLocaleString()}
+            </p>
 
         `;
 
@@ -303,7 +303,7 @@ async function loadPosts(){
 
 
 
-    });
+    }
 
 
 
@@ -319,6 +319,7 @@ createPostButton.addEventListener(
     "click",
     createPost
 );
+
 
 
 
