@@ -35,6 +35,8 @@ loginButton.addEventListener("click", async ()=>{
         message.textContent =
         "Please enter email and password.";
 
+        message.style.color = "#ff5555";
+
         return;
 
     }
@@ -44,42 +46,79 @@ loginButton.addEventListener("click", async ()=>{
     message.textContent =
     "Logging in...";
 
-
-
-    const { data, error } =
-    await window.groveClient.auth.signInWithPassword({
-
-        email,
-
-        password
-
-    });
+    message.style.color = "#8f9893";
 
 
 
-    if(error){
+    try {
+
+
+        const { data, error } =
+        await window.groveClient.auth.signInWithPassword({
+
+            email,
+
+            password
+
+        });
+
+
+
+        if(error){
+
+            console.error("Login error:", error);
+
+            message.textContent =
+            error.message;
+
+            message.style.color = "#ff5555";
+
+            return;
+
+        }
+
+
+
+        if(data.user){
+
+
+            message.textContent =
+            "Login successful.";
+
+            message.style.color = "#2f6e4a";
+
+
+
+            setTimeout(()=>{
+
+
+                window.location.href =
+                "user-dashboard.html";
+
+
+            },800);
+
+
+
+        }
+
+
+
+    } catch(err){
+
+
+        console.error("Login failed:", err);
+
 
         message.textContent =
-        error.message;
+        err.message;
 
-        return;
+        message.style.color =
+        "#ff5555";
+
 
     }
 
-
-
-    if(data.user){
-
-
-        message.textContent =
-        "Login successful.";
-
-
-        window.location.href =
-        "index.html";
-
-
-    }
 
 
 });
