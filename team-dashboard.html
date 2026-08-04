@@ -125,6 +125,45 @@ button:hover{
 
 
 
+.online-box{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:15px;
+
+}
+
+
+
+.online-light{
+
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:#555;
+
+}
+
+
+
+.online-text{
+
+    color:#8f9893;
+
+}
+
+
+
+.last-seen{
+
+    color:#8f9893;
+    font-size:.9rem;
+
+}
+
+
+
 </style>
 
 
@@ -188,6 +227,28 @@ Loading role...
 
 
 
+<div class="online-box">
+
+<div id="online-light" class="online-light"></div>
+
+<p id="online-text" class="online-text">
+
+Checking status...
+
+</p>
+
+</div>
+
+
+
+<p id="last-seen" class="last-seen">
+
+Loading last seen...
+
+</p>
+
+
+
 <p class="status">
 
 ✓ Grove Team Access Active
@@ -242,4 +303,4 @@ Welcome to the Grove team. More contributor tools will appear here as Grove grow
 
 </body>
 
-</html>
+    </html>
