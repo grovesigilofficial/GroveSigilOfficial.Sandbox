@@ -138,12 +138,76 @@ button:hover{
 
 .online-light{
 
+    position:relative;
+
     width:14px;
     height:14px;
+
     border-radius:50%;
-    background:#555;
+
+    background:#2f6e4a;
+
+    box-shadow:
+    0 0 10px rgba(47,110,74,.8);
 
 }
+
+
+
+.online-light::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:22px;
+    height:22px;
+
+    left:-4px;
+    top:-4px;
+
+    border-radius:50%;
+
+    background:rgba(47,110,74,.35);
+
+    animation:pulse 2s infinite;
+
+}
+
+
+
+@keyframes pulse{
+
+
+    0%{
+
+        transform:scale(.8);
+
+        opacity:.8;
+
+    }
+
+
+    50%{
+
+        transform:scale(1.4);
+
+        opacity:.25;
+
+    }
+
+
+    100%{
+
+        transform:scale(.8);
+
+        opacity:.8;
+
+    }
+
+
+}
+
 
 
 
@@ -158,6 +222,7 @@ button:hover{
 .last-seen{
 
     color:#8f9893;
+
     font-size:.9rem;
 
 }
