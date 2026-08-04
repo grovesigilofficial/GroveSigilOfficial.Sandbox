@@ -45,7 +45,12 @@ function formatGroveTime(timestamp){
 
 
 
-    if(isNaN(date.getTime())){
+    if(Number.isNaN(date.getTime())){
+
+        console.error(
+            "Invalid timestamp received:",
+            timestamp
+        );
 
         return "Invalid timestamp";
 
@@ -63,7 +68,6 @@ function formatGroveTime(timestamp){
 
 
 }
-
 
 
 
@@ -113,13 +117,12 @@ async function checkAuth(){
 
 
 
-    loadTasks();
+    await loadTasks();
 
-    loadFeedback();
+    await loadFeedback();
 
 
 }
-
 
 
 
@@ -158,6 +161,8 @@ async function loadTasks(){
         return;
 
     }
+
+
 
 
 
@@ -262,7 +267,6 @@ async function loadTasks(){
 
 
 
-
 async function addTask(){
 
 
@@ -331,13 +335,22 @@ async function addTask(){
 }
 
 
+/*
+====================================================
+END OF CHUNK 1/2
 
+IMPORTANT:
+CHUNK 2/2 GOES DIRECTLY UNDER THIS COMMENT.
 
+DO NOT ADD OR REMOVE ANY CODE BETWEEN CHUNKS.
 
+A BLANK SPACE IS NOT REQUIRED.
+PASTE THE NEXT CHUNK DIRECTLY BELOW THIS COMMENT.
 
-
-
-
+THIS IS STILL THE SAME FILE:
+js/console.js
+====================================================
+*/
 async function toggleTask(id, completed){
 
 
@@ -374,7 +387,6 @@ async function toggleTask(id, completed){
 
 
 }
-
 
 
 
@@ -442,7 +454,6 @@ async function editTask(id, oldTitle){
 
 
 
-
 async function deleteTask(id){
 
 
@@ -495,7 +506,6 @@ async function deleteTask(id){
 
 
 
-
 async function loadFeedback(){
 
 
@@ -504,6 +514,7 @@ async function loadFeedback(){
         return;
 
     }
+
 
 
 
@@ -579,7 +590,7 @@ async function loadFeedback(){
         if(item.user_id){
 
 
-            const { data: profile } =
+            const { data: profile, error: profileError } =
             await window.groveClient
             .from("profiles")
             .select(
@@ -590,6 +601,17 @@ async function loadFeedback(){
                 item.user_id
             )
             .single();
+
+
+
+            if(profileError){
+
+                console.error(
+                    "Profile lookup error:",
+                    profileError
+                );
+
+            }
 
 
 
@@ -609,9 +631,7 @@ async function loadFeedback(){
 
 
         const timestamp =
-        item.created_at ||
-        item.timestamp ||
-        item.created;
+        item.created_at;
 
 
 
@@ -679,7 +699,6 @@ async function loadFeedback(){
 
 
 
-
 async function deleteFeedback(id){
 
 
@@ -736,7 +755,6 @@ async function deleteFeedback(id){
 
 
 
-
 if(logoutButton){
 
 
@@ -780,7 +798,6 @@ async ()=>{
 
 
 
-
 if(addTaskButton){
 
 
@@ -811,6 +828,7 @@ deleteTask;
 
 window.deleteFeedback =
 deleteFeedback;
+
 
 
 
