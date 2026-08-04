@@ -281,7 +281,11 @@ async function loadPosts(){
 
             <p>
                 <strong>
-                    ${username}
+                    <a 
+                    href="profile.html?username=${encodeURIComponent(username)}"
+                    style="color:#2f6e4a;text-decoration:none;">
+                        ${username}
+                    </a>
                 </strong>
             </p>
 
