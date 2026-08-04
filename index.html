@@ -25,6 +25,8 @@ body{
 
     font-family:Arial,Helvetica,sans-serif;
 
+    color:#d8ddd9;
+
 }
 
 
@@ -71,7 +73,6 @@ header{
 
 
 
-
 main{
 
     min-height:calc(100vh - 72px);
@@ -96,9 +97,11 @@ h1{
 
     font-size:5rem;
 
+    letter-spacing:2px;
+
     text-shadow:
-        0 0 10px rgba(47,110,74,.55),
-        0 0 25px rgba(47,110,74,.30);
+    0 0 10px rgba(47,110,74,.55),
+    0 0 25px rgba(47,110,74,.30);
 
 }
 
@@ -108,13 +111,13 @@ h1{
 
     width:350px;
 
-    padding:25px;
+    padding:28px;
 
     background:#101512;
 
     border:1px solid #232b27;
 
-    border-radius:12px;
+    border-radius:14px;
 
     text-align:center;
 
@@ -126,9 +129,9 @@ h1{
 
     color:#d8ddd9;
 
-    margin-bottom:12px;
+    margin-bottom:14px;
 
-    font-size:1.3rem;
+    font-size:1.35rem;
 
 }
 
@@ -138,11 +141,11 @@ h1{
 
     color:#8f9893;
 
-    line-height:1.5;
+    line-height:1.6;
 
     font-size:.95rem;
 
-    margin-bottom:20px;
+    margin-bottom:22px;
 
 }
 
@@ -158,7 +161,7 @@ h1{
 
     text-decoration:none;
 
-    padding:10px 18px;
+    padding:11px 20px;
 
     border-radius:8px;
 
@@ -173,7 +176,6 @@ h1{
     opacity:.85;
 
 }
-
 
 
 
@@ -208,6 +210,7 @@ h1{
 }
 
 
+
 </style>
 
 </head>
@@ -218,6 +221,7 @@ h1{
 
 <header>
 
+
 <a href="login.html" class="nav-button">
 
 Login
@@ -225,11 +229,13 @@ Login
 </a>
 
 
+
 <a href="signup.html" class="nav-button">
 
 Create Account
 
 </a>
+
 
 
 <a href="team-login.html" class="nav-button">
@@ -240,6 +246,8 @@ Team Login
 
 
 </header>
+
+
 
 
 
@@ -254,14 +262,17 @@ Grove
 
 
 
+
+
 <div class="team-card">
 
 
 <h2>
 
-Join the Grove Team
+Join the Grove Community
 
 </h2>
+
 
 
 <p>
@@ -272,11 +283,13 @@ Beta testers, moderators, and contributors can help build the future of Grove.
 </p>
 
 
+
 <a href="moderator-apply.html" class="team-button">
 
-Apply to Join
+Apply for Grove Access
 
 </a>
+
 
 
 </div>
@@ -284,6 +297,7 @@ Apply to Join
 
 
 </main>
+
 
 
 
@@ -298,12 +312,14 @@ Apply to Join
 
 
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="js/supabase.js"></script>
 
 
 <script>
+
 
 window.addEventListener("load", async ()=>{
 
@@ -314,13 +330,15 @@ window.addEventListener("load", async ()=>{
 
 
     console.log(
-        "Auth session:",
+        "Grove session:",
         data,
         error
     );
 
 
 });
+
+
 
 </script>
 
