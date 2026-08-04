@@ -21,9 +21,13 @@
 body{
 
     min-height:100vh;
+
     background:#0b0f0d;
+
     color:#d8ddd9;
+
     font-family:Arial,Helvetica,sans-serif;
+
     padding:40px;
 
 }
@@ -33,6 +37,7 @@ body{
 .container{
 
     max-width:900px;
+
     margin:auto;
 
 }
@@ -42,8 +47,11 @@ body{
 header{
 
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     margin-bottom:40px;
 
 }
@@ -62,14 +70,18 @@ h1{
 
 
 
-
 button{
 
     background:#2f6e4a;
+
     color:white;
+
     border:none;
+
     padding:12px 20px;
+
     border-radius:10px;
+
     cursor:pointer;
 
 }
@@ -84,17 +96,19 @@ button:hover{
 
 
 
-
 .card{
 
     background:#101512;
+
     border:1px solid #232b27;
+
     border-radius:16px;
+
     padding:30px;
+
     margin-bottom:20px;
 
 }
-
 
 
 
@@ -106,25 +120,67 @@ button:hover{
 
 
 
-
 .card p{
 
     color:#8f9893;
+
     margin-bottom:8px;
 
 }
 
 
 
+textarea{
+
+    width:100%;
+
+    height:120px;
+
+    background:#0b0f0d;
+
+    border:1px solid #232b27;
+
+    border-radius:10px;
+
+    padding:15px;
+
+    color:white;
+
+    resize:none;
+
+    margin-bottom:15px;
+
+}
+
+
 
 .post{
 
     border-top:1px solid #232b27;
+
     padding-top:20px;
+
     margin-top:20px;
 
 }
 
+
+
+.post strong{
+
+    color:#2f6e4a;
+
+}
+
+
+
+.post-time{
+
+    font-size:.8rem;
+
+    color:#58635d;
+
+}
 
 
 </style>
@@ -163,6 +219,7 @@ Logout
 
 
 
+
 <div class="card">
 
 
@@ -189,6 +246,45 @@ Loading email...
 
 
 
+
+<div class="card">
+
+
+<h2>
+Create Post
+</h2>
+
+
+
+<textarea 
+id="post-content"
+placeholder="Share something with the Grove...">
+</textarea>
+
+
+
+<button id="create-post">
+
+Post
+
+</button>
+
+
+
+<div id="post-message">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
 <div class="card">
 
 
@@ -200,13 +296,11 @@ Grove Feed
 
 
 
-<div class="post">
+<div id="feed">
 
 
 <p>
-
-The Grove is growing. Your journey begins here.
-
+Loading posts...
 </p>
 
 
@@ -221,6 +315,7 @@ The Grove is growing. Your journey begins here.
 
 
 </div>
+
 
 
 
