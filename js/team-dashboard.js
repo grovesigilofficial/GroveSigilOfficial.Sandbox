@@ -13,12 +13,124 @@ const roleDisplay =
 document.getElementById("team-role");
 
 
+const onlineLight =
+document.getElementById("online-light");
+
+
+const onlineText =
+document.getElementById("online-text");
+
+
+const lastSeenDisplay =
+document.getElementById("last-seen");
+
+
 const logoutButton =
 document.getElementById("logout");
 
 
 
+
+
+function formatLastSeen(date){
+
+
+    const now =
+    new Date();
+
+
+    const diff =
+    Math.floor(
+        (now - date) / 1000
+    );
+
+
+    if(diff < 60){
+
+        return "Just now";
+
+    }
+
+
+    if(diff < 3600){
+
+        return Math.floor(diff / 60) + " minutes ago";
+
+    }
+
+
+    if(diff < 86400){
+
+        return Math.floor(diff / 3600) + " hours ago";
+
+    }
+
+
+    return date.toLocaleString();
+
+
+}
+
+
+
+
+
+function updateStatus(lastSeen){
+
+
+    const seen =
+    new Date(lastSeen);
+
+
+    const seconds =
+    (new Date() - seen) / 1000;
+
+
+
+    if(seconds < 120){
+
+
+        onlineLight.style.background =
+        "#2f6e4a";
+
+
+        onlineText.textContent =
+        "🟢 Online";
+
+
+    } else {
+
+
+        onlineLight.style.background =
+        "#555";
+
+
+        onlineText.textContent =
+        "⚪ Offline";
+
+
+    }
+
+
+
+    lastSeenDisplay.textContent =
+    "Last seen: " + formatLastSeen(seen);
+
+
+}
+
+
+
+
+
+
+
 async function updateLastSeen(userId){
+
+
+    const now =
+    new Date().toISOString();
+
 
 
     const { error } =
@@ -26,7 +138,7 @@ async function updateLastSeen(userId){
     .from("team_members")
     .update({
 
-        last_seen: new Date().toISOString()
+        last_seen: now
 
     })
     .eq(
@@ -38,15 +150,21 @@ async function updateLastSeen(userId){
 
     if(error){
 
+
         console.error(
             "Last seen update error:",
             error
         );
 
+
     }
 
 
+    return now;
+
+
 }
+
 
 
 
@@ -76,6 +194,8 @@ async function loadTeamMember(){
 
     const user =
     data.session.user;
+
+
 
 
 
@@ -118,6 +238,8 @@ async function loadTeamMember(){
 
 
 
+
+
     nameDisplay.textContent =
     "Welcome, " + member.username;
 
@@ -129,7 +251,8 @@ async function loadTeamMember(){
 
 
     roleDisplay.textContent =
-    "Role: " + member.role;
+    "Role: " + member.role.toUpperCase();
+
 
 
 
@@ -137,11 +260,23 @@ async function loadTeamMember(){
 
 
 
+    updateStatus(
+        new Date()
+    );
 
-    setInterval(()=>{
 
 
-        updateLastSeen(user.id);
+    setInterval(async ()=>{
+
+
+        const updated =
+        await updateLastSeen(user.id);
+
+
+
+        updateStatus(
+            updated
+        );
 
 
     },60000);
@@ -149,6 +284,7 @@ async function loadTeamMember(){
 
 
 }
+
 
 
 
@@ -178,7 +314,6 @@ async ()=>{
 
 
     }
-
 
 
 
