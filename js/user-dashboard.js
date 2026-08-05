@@ -46,6 +46,9 @@ document.getElementById("suggestion-message");
 let currentUser = null;
 
 
+let currentRole = "user";
+
+
 
 
 
@@ -209,6 +212,16 @@ async function checkUser(){
 
 
     await updateLastSeen();
+
+
+    currentRole =
+    await getUserRole();
+
+
+    console.log(
+        "Current role:",
+        currentRole
+    );
 
 
 
@@ -613,15 +626,6 @@ async function loadPosts(){
 
 
 }
-
-
-
-
-
-
-
-
-
 createPostButton.addEventListener(
 "click",
 createPost
