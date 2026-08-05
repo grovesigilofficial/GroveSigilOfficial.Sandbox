@@ -29,7 +29,6 @@ const feed =
 document.getElementById("feed");
 
 
-
 const suggestionContent =
 document.getElementById("suggestion-content");
 
@@ -42,13 +41,10 @@ const suggestionMessage =
 document.getElementById("suggestion-message");
 
 
-
 let currentUser = null;
 
 
 let currentRole = "user";
-
-
 
 
 
@@ -135,9 +131,6 @@ function getUserStatus(lastSeen){
 
 
 
-
-
-
 async function updateLastSeen(){
 
 
@@ -182,6 +175,133 @@ async function updateLastSeen(){
 
 
 
+async function deletePost(postId){
+
+
+    const confirmed =
+    confirm(
+        "Delete this post?"
+    );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+
+    const { error } =
+    await window.groveClient
+    .from("posts")
+    .delete()
+    .eq(
+        "id",
+        postId
+    )
+    .eq(
+        "user_id",
+        currentUser.id
+    );
+
+
+
+    if(error){
+
+        console.error(
+            "Delete post error:",
+            error
+        );
+
+        alert(
+            error.message
+        );
+
+        return;
+
+    }
+
+
+
+    loadPosts();
+
+
+}
+
+
+
+
+
+
+
+async function editPost(postId, oldContent){
+
+
+    const newContent =
+    prompt(
+        "Edit your post:",
+        oldContent
+    );
+
+
+    if(
+        !newContent ||
+        newContent.trim() === oldContent
+    ){
+
+        return;
+
+    }
+
+
+
+    const { error } =
+    await window.groveClient
+    .from("posts")
+    .update({
+
+        content:
+        newContent.trim()
+
+    })
+    .eq(
+        "id",
+        postId
+    )
+    .eq(
+        "user_id",
+        currentUser.id
+    );
+
+
+
+    if(error){
+
+        console.error(
+            "Edit post error:",
+            error
+        );
+
+        alert(
+            error.message
+        );
+
+        return;
+
+    }
+
+
+
+    loadPosts();
+
+
+}
+
+
+
+
+
 
 
 async function checkUser(){
@@ -214,8 +334,10 @@ async function checkUser(){
     await updateLastSeen();
 
 
+
     currentRole =
     await getUserRole();
+
 
 
     console.log(
@@ -227,12 +349,7 @@ async function checkUser(){
 
     emailDisplay.textContent =
     "Email: " + currentUser.email;
-
-
-
-
-
-    const { data: profile, error: profileError } =
+        const { data: profile, error: profileError } =
     await window.groveClient
     .from("profiles")
     .select("username")
@@ -241,8 +358,6 @@ async function checkUser(){
         currentUser.id
     )
     .single();
-
-
 
 
 
@@ -274,8 +389,6 @@ async function checkUser(){
 
 
 }
-
-
 
 
 
@@ -351,8 +464,6 @@ async function createPost(){
 
 
 
-
-
     postContent.value = "";
 
 
@@ -362,17 +473,10 @@ async function createPost(){
 
 
 
-
-
     loadPosts();
 
 
-
-
-
 }
-
-
 
 
 
@@ -448,8 +552,6 @@ async function sendSuggestion(){
 
 
 
-
-
     suggestionContent.value = "";
 
 
@@ -458,13 +560,7 @@ async function sendSuggestion(){
     "Suggestion sent to Grove.";
 
 
-
-
-
-
 }
-
-
 
 
 
@@ -481,6 +577,8 @@ async function loadPosts(){
     .select(`
 
         id,
+
+        user_id,
 
         content,
 
@@ -501,8 +599,6 @@ async function loadPosts(){
             ascending:false
         }
     );
-
-
 
 
 
@@ -530,9 +626,6 @@ async function loadPosts(){
 
 
 
-
-
-
     if(!data.length){
 
 
@@ -549,11 +642,7 @@ async function loadPosts(){
 
 
 
-
-
-
     feed.innerHTML = "";
-
 
 
 
@@ -585,6 +674,36 @@ async function loadPosts(){
 
 
 
+        let controls = "";
+
+
+
+        if(
+            currentUser &&
+            post.user_id === currentUser.id
+        ){
+
+            controls = `
+
+            <button onclick="editPost('${post.id}', ${JSON.stringify(post.content)})">
+
+            Edit
+
+            </button>
+
+
+            <button onclick="deletePost('${post.id}')">
+
+            Delete
+
+            </button>
+
+            `;
+
+        }
+
+
+
         div.innerHTML = `
 
         <p>
@@ -605,6 +724,13 @@ async function loadPosts(){
         </p>
 
 
+        <div>
+
+        ${controls}
+
+        </div>
+
+
         <p class="post-time">
 
         ${new Date(post.created_at).toLocaleString()}
@@ -622,10 +748,27 @@ async function loadPosts(){
     });
 
 
-
-
-
 }
+
+
+
+
+
+
+
+window.deletePost =
+deletePost;
+
+
+window.editPost =
+editPost;
+
+
+
+
+
+
+
 createPostButton.addEventListener(
 "click",
 createPost
@@ -647,7 +790,6 @@ if(sendSuggestionButton){
 
 
 }
-
 
 
 
@@ -687,7 +829,6 @@ async ()=>{
 
 
 });
-
 
 
 
