@@ -50,6 +50,7 @@ let currentRole = "user";
 
 
 
+
 function getUserStatus(lastSeen){
 
 
@@ -349,7 +350,10 @@ async function checkUser(){
 
     emailDisplay.textContent =
     "Email: " + currentUser.email;
-        const { data: profile, error: profileError } =
+
+
+
+    const { data: profile, error: profileError } =
     await window.groveClient
     .from("profiles")
     .select("username")
@@ -483,7 +487,6 @@ async function createPost(){
 
 
 
-
 async function sendSuggestion(){
 
 
@@ -567,7 +570,6 @@ async function sendSuggestion(){
 
 
 
-
 async function loadPosts(){
 
 
@@ -599,12 +601,7 @@ async function loadPosts(){
             ascending:false
         }
     );
-
-
-
-
-
-    if(error){
+        if(error){
 
 
         console.error(
@@ -769,10 +766,12 @@ editPost;
 
 
 
+
 createPostButton.addEventListener(
 "click",
 createPost
 );
+
 
 
 
