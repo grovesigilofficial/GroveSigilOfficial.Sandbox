@@ -481,12 +481,6 @@ async function createPost(){
 
 
 }
-
-
-
-
-
-
 async function sendSuggestion(){
 
 
@@ -601,7 +595,9 @@ async function loadPosts(){
             ascending:false
         }
     );
-        if(error){
+
+
+    if(error){
 
 
         console.error(
