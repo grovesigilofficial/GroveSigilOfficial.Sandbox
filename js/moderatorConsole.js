@@ -1,5 +1,5 @@
+```javascript
 console.log("moderatorConsole loaded");
-
 
 const applications =
 document.getElementById("applications");
@@ -8,13 +8,11 @@ document.getElementById("applications");
 
 async function loadApplications(){
 
-
     applications.innerHTML =
     "Loading applications...";
 
 
     if(!window.groveClient){
-
 
         console.error(
             "groveClient missing"
@@ -26,7 +24,6 @@ async function loadApplications(){
 
 
         return;
-
 
     }
 
@@ -60,7 +57,6 @@ async function loadApplications(){
 
     if(error){
 
-
         console.error(
             "Load error:",
             error
@@ -73,20 +69,17 @@ async function loadApplications(){
 
         return;
 
-
     }
 
 
 
     if(!data || data.length === 0){
 
-
         applications.innerHTML =
         "No applications found.";
 
 
         return;
-
 
     }
 
@@ -97,7 +90,6 @@ async function loadApplications(){
 
 
     data.forEach(app=>{
-
 
         const card =
         document.createElement("div");
@@ -114,9 +106,7 @@ async function loadApplications(){
 
         if(app.status === "pending"){
 
-
             buttons = `
-
 
             <button onclick="updateApplication('${app.id}','approved')">
 
@@ -132,9 +122,7 @@ async function loadApplications(){
 
             </button>
 
-
             `;
-
 
         }
 
@@ -142,9 +130,7 @@ async function loadApplications(){
 
         if(app.status === "approved"){
 
-
             buttons = `
-
 
             <button onclick="addToTeam('${app.id}')">
 
@@ -152,17 +138,13 @@ async function loadApplications(){
 
             </button>
 
-
             `;
-
 
         }
 
 
 
-
         card.innerHTML = `
-
 
         <p>
         <b>Email:</b> ${app.email}
@@ -203,23 +185,13 @@ async function loadApplications(){
 
         applications.appendChild(card);
 
-
-
     });
-
-
 
 }
 
 
 
-
-
-
-
 async function updateApplication(id,status){
-
-
 
     const { error } =
     await window.groveClient
@@ -238,7 +210,6 @@ async function updateApplication(id,status){
 
     if(error){
 
-
         console.error(
             "Update error:",
             error
@@ -252,26 +223,17 @@ async function updateApplication(id,status){
 
         return;
 
-
     }
 
 
 
     loadApplications();
 
-
-
 }
 
 
 
-
-
-
-
 async function addToTeam(id){
-
-
 
     const { data: application, error } =
     await window.groveClient
@@ -287,7 +249,6 @@ async function addToTeam(id){
 
     if(error){
 
-
         console.error(
             "Application error:",
             error
@@ -301,6 +262,36 @@ async function addToTeam(id){
 
         return;
 
+    }
+
+
+
+    const { data: profile, error: profileError } =
+    await window.groveClient
+    .from("profiles")
+    .select("user_id, username")
+    .eq(
+        "username",
+        application.username
+    )
+    .single();
+
+
+
+    if(profileError || !profile){
+
+        console.error(
+            "Profile lookup error:",
+            profileError
+        );
+
+
+        alert(
+            "Could not find the user's profile."
+        );
+
+
+        return;
 
     }
 
@@ -310,6 +301,9 @@ async function addToTeam(id){
     await window.groveClient
     .from("team_members")
     .insert({
+
+        user_id:
+        profile.user_id,
 
         email:
         application.email,
@@ -326,7 +320,6 @@ async function addToTeam(id){
 
     if(teamError){
 
-
         console.error(
             "Team insert error:",
             teamError
@@ -340,7 +333,6 @@ async function addToTeam(id){
 
         return;
 
-
     }
 
 
@@ -352,25 +344,17 @@ async function addToTeam(id){
 
     loadApplications();
 
-
-
 }
-
-
-
-
 
 
 
 window.updateApplication =
 updateApplication;
 
-
 window.addToTeam =
 addToTeam;
 
 
 
-
-
 loadApplications();
+```
