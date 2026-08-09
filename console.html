@@ -1,449 +1,190 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
+```
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Console • Grove</title>
 
-
 <style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-
-:root{
-
-    --bg:#0b0f0d;
-    --card:#111614;
-    --border:#232b27;
-    --accent:#2f6e4a;
-    --text:#ffffff;
-    --muted:#8f9893;
-
-}
-
-
-
-body{
-
-    min-height:100vh;
-    background:var(--bg);
-    color:var(--text);
-    font-family:Arial,Helvetica,sans-serif;
-    padding:40px;
-
-}
-
-
-
-
-.container{
-
-    max-width:900px;
-    margin:auto;
-
-}
-
-
-
-
-header{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:40px;
-
-}
-
-
-
-
-h1{
-
-    color:var(--accent);
-
-    text-shadow:
-
-    0 0 8px rgba(47,110,74,.45),
-    0 0 18px rgba(47,110,74,.20);
-
-}
-
-
-
-
-
-button{
-
-    background:var(--accent);
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:10px;
-    cursor:pointer;
-
-}
-
-
-
-button:hover{
-
-    opacity:.85;
-
-}
-
-
-
-
-
-.card{
-
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:30px;
-    margin-bottom:20px;
-
-}
-
-
-
-
-.card h2{
-
-    margin-bottom:15px;
-
-}
-
-
-
-
-
-.card p{
-
-    color:var(--muted);
-
-}
-
-
-
-
-
-input,
-textarea{
-
-    width:100%;
-    background:#0b0f0d;
-    color:white;
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px;
-    margin-bottom:12px;
-
-}
-
-
-
-
-
-textarea{
-
-    min-height:100px;
-
-}
-
-
-
-
-
-.task{
-
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:15px;
-    margin-top:15px;
-
-}
-
-
-
-
-
-.task h3{
-
-    margin-bottom:10px;
-
-}
-
-
-
-
-
-.task p{
-
-    margin-bottom:10px;
-
-}
-
-
-
-
-
-.task.completed{
-
-    opacity:.55;
-
-}
-
-
-
-
-
-.task-buttons{
-
-    margin-top:15px;
-
-}
-
-
-
-
-
-.task-buttons button{
-
-    margin-right:8px;
-
-}
-
-
-
-
-.section-note{
-
-    margin-bottom:15px;
-
-}
-
-
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    :root{
+        --bg:#0b0f0d;
+        --card:#111614;
+        --border:#232b27;
+        --accent:#2f6e4a;
+        --text:#ffffff;
+        --muted:#8f9893;
+    }
+
+    body{
+        min-height:100vh;
+        background:var(--bg);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-family:Arial, Helvetica, sans-serif;
+        color:var(--text);
+        padding:24px;
+    }
+
+    .card{
+        width:100%;
+        max-width:420px;
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:16px;
+        padding:36px;
+        box-shadow:0 0 30px rgba(47,110,74,.08);
+    }
+
+    h1{
+        text-align:center;
+        color:var(--accent);
+        margin-bottom:12px;
+        text-shadow:
+            0 0 8px rgba(47,110,74,.45),
+            0 0 18px rgba(47,110,74,.20);
+    }
+
+    p{
+        text-align:center;
+        color:var(--muted);
+        margin-bottom:28px;
+        font-size:.9rem;
+    }
+
+    input{
+        width:100%;
+        padding:14px;
+        margin-bottom:18px;
+        background:#0d1110;
+        border:1px solid var(--border);
+        border-radius:10px;
+        color:white;
+        font-size:15px;
+    }
+
+    input:focus{
+        outline:none;
+        border-color:var(--accent);
+    }
+
+    button{
+        width:100%;
+        padding:14px;
+        background:var(--accent);
+        color:#08110c;
+        border:none;
+        border-radius:10px;
+        cursor:pointer;
+        font-size:15px;
+        font-weight:bold;
+    }
+
+    button:hover{
+        filter:brightness(1.05);
+    }
+
+    .forgot{
+        display:block;
+        margin-top:18px;
+        text-align:center;
+        color:var(--muted);
+        text-decoration:none;
+        font-size:.9rem;
+    }
+
+    .forgot:hover{
+        color:var(--accent);
+    }
+
+    .back{
+        display:block;
+        margin-top:24px;
+        text-align:center;
+        color:var(--muted);
+        text-decoration:none;
+    }
+
+    .back:hover{
+        color:var(--accent);
+    }
 
 </style>
-
+```
 
 </head>
 
-
-
 <body>
 
-
-
-<div class="container">
-
-
-
-<header>
-
-
-<h1>
-Grove Console
-</h1>
-
-
-
-<button id="logout">
-Logout
-</button>
-
-
-
-</header>
-
-
-
-
-
-
-
 <div class="card">
 
-
-<h2>
-Welcome, Architect.
-</h2>
-
-
-<p>
-Private Grove administration console.
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-Tasks
-</h2>
-
-
-
-<input 
-id="task-title"
-placeholder="Task title">
-
-
-
-
-
-<textarea
-id="task-description"
-placeholder="Task description">
-</textarea>
-
-
-
-
-
-<button id="add-task">
-
-Add Task
-
-</button>
-
-
-
-
-<div id="tasks">
-
-Loading tasks...
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-Suggestion Inbox
-</h2>
-
-
-
-<p class="section-note">
-
-Ideas and feedback submitted by Grove users.
-
-</p>
-
-
-
-<div id="feedback">
-
-Loading suggestions...
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-Moderator Applications
-</h2>
-
-
-
-
-<p>
-
-Review beta testers, moderators, and contributors joining Grove.
-
-</p>
-
-
-
-<br>
-
-
-
-<a href="moderator-console.html">
-
-
-<button>
-
-Open Applications
-
-</button>
-
-
+```
+<h1>Console</h1>
+
+<p>Administrator access only.</p>
+
+<form id="loginForm">
+
+    <input
+        id="email"
+        type="email"
+        placeholder="Email"
+        required
+    >
+
+    <input
+        id="password"
+        type="password"
+        placeholder="Password"
+        required
+    >
+
+    <button type="submit">
+        Sign In
+    </button>
+
+</form>
+
+<a
+    href="reset-request.html"
+    class="forgot"
+>
+    Forgot Password?
 </a>
 
-
-
-</div>
-
-
-
-
-
-
+<a
+    href="index.html"
+    class="back"
+>
+    ← Return to Grove
+</a>
+```
 
 </div>
 
-
-
-
-
-
-
-
+<!-- Supabase Library -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<!-- Grove -->
+
 <script src="js/supabase.js"></script>
 
-<script src="js/console.js"></script>
+<!-- Login -->
 
-
+<script src="js/console-login.js"></script>
 
 </body>
 
