@@ -1,58 +1,43 @@
+```javascript
 console.log("user-dashboard loaded");
-
 
 const usernameDisplay =
 document.getElementById("username");
 
-
 const emailDisplay =
 document.getElementById("user-email");
-
 
 const logoutButton =
 document.getElementById("logout");
 
-
 const postContent =
 document.getElementById("post-content");
-
 
 const createPostButton =
 document.getElementById("create-post");
 
-
 const postMessage =
 document.getElementById("post-message");
-
 
 const feed =
 document.getElementById("feed");
 
-
 const suggestionContent =
 document.getElementById("suggestion-content");
-
 
 const sendSuggestionButton =
 document.getElementById("send-suggestion");
 
-
 const suggestionMessage =
 document.getElementById("suggestion-message");
 
-
 let currentUser = null;
-
 
 let currentRole = "user";
 
 
 
-
-
-
 function getUserStatus(lastSeen){
-
 
     if(!lastSeen){
 
@@ -124,16 +109,130 @@ function getUserStatus(lastSeen){
 
     return `● Last seen ${days} day${days === 1 ? "" : "s"} ago`;
 
+}
+
+
+
+function setupRoleInterface(){
+
+    const existingRoleDisplay =
+    document.getElementById("user-role");
+
+
+
+    const roleDisplay =
+    existingRoleDisplay ||
+    document.createElement("p");
+
+
+
+    roleDisplay.id =
+    "user-role";
+
+
+
+    roleDisplay.textContent =
+    "Role: " +
+    currentRole;
+
+
+
+    roleDisplay.style.color =
+    "#8f9893";
+
+
+
+    if(!existingRoleDisplay){
+
+        emailDisplay.insertAdjacentElement(
+            "afterend",
+            roleDisplay
+        );
+
+    }
+
+
+
+    const existingModeratorLink =
+    document.getElementById(
+        "moderator-console-link"
+    );
+
+
+
+    if(
+        currentRole === "moderator" ||
+        currentRole === "owner"
+    ){
+
+        const moderatorLink =
+        existingModeratorLink ||
+        document.createElement("a");
+
+
+
+        moderatorLink.id =
+        "moderator-console-link";
+
+
+
+        moderatorLink.href =
+        "moderator-console.html";
+
+
+
+        moderatorLink.textContent =
+        "Open Moderator Console";
+
+
+
+        moderatorLink.style.display =
+        "inline-block";
+
+
+
+        moderatorLink.style.marginTop =
+        "15px";
+
+
+
+        moderatorLink.style.color =
+        "#2f6e4a";
+
+
+
+        moderatorLink.style.textDecoration =
+        "none";
+
+
+
+        if(!existingModeratorLink){
+
+            roleDisplay.insertAdjacentElement(
+                "afterend",
+                moderatorLink
+            );
+
+        }
+
+    } else if(existingModeratorLink){
+
+        existingModeratorLink.remove();
+
+    }
+
+
+
+    console.log(
+        "Role interface configured for:",
+        currentRole
+    );
 
 }
 
 
 
-
-
-
 async function updateLastSeen(){
-
 
     if(!currentUser){
 
@@ -167,22 +266,17 @@ async function updateLastSeen(){
 
     }
 
-
 }
-
-
-
-
 
 
 
 async function deletePost(postId){
 
-
     const confirmed =
     confirm(
         "Delete this post?"
     );
+
 
 
     if(!confirmed){
@@ -227,23 +321,18 @@ async function deletePost(postId){
 
     loadPosts();
 
-
 }
 
 
 
-
-
-
-
 async function editPost(postId, oldContent){
-
 
     const newContent =
     prompt(
         "Edit your post:",
         oldContent
     );
+
 
 
     if(
@@ -296,17 +385,11 @@ async function editPost(postId, oldContent){
 
     loadPosts();
 
-
 }
 
 
 
-
-
-
-
 async function checkUser(){
-
 
     const { data, error } =
     await window.groveClient.auth.getSession();
@@ -315,13 +398,10 @@ async function checkUser(){
 
     if(error || !data.session){
 
-
         window.location.href =
         "login.html";
 
-
         return;
-
 
     }
 
@@ -353,6 +433,10 @@ async function checkUser(){
 
 
 
+    setupRoleInterface();
+
+
+
     const { data: profile, error: profileError } =
     await window.groveClient
     .from("profiles")
@@ -367,23 +451,20 @@ async function checkUser(){
 
     if(profileError){
 
-
         console.error(
             "Profile loading error:",
             profileError
         );
 
 
+
         usernameDisplay.textContent =
         "Welcome to Grove";
 
-
     } else {
-
 
         usernameDisplay.textContent =
         "Welcome, " + profile.username;
-
 
     }
 
@@ -391,17 +472,11 @@ async function checkUser(){
 
     loadPosts();
 
-
 }
 
 
 
-
-
-
-
 async function createPost(){
-
 
     const content =
     postContent.value.trim();
@@ -410,13 +485,10 @@ async function createPost(){
 
     if(!content){
 
-
         postMessage.textContent =
         "Write something first.";
 
-
         return;
-
 
     }
 
@@ -424,8 +496,6 @@ async function createPost(){
 
     postMessage.textContent =
     "Posting...";
-
-
 
 
 
@@ -444,27 +514,19 @@ async function createPost(){
 
 
 
-
-
     if(error){
-
 
         console.error(
             "Post error:",
             error
         );
 
-
         postMessage.textContent =
         error.message;
 
-
         return;
 
-
     }
-
-
 
 
 
@@ -479,10 +541,11 @@ async function createPost(){
 
     loadPosts();
 
-
 }
-async function sendSuggestion(){
 
+
+
+async function sendSuggestion(){
 
     const content =
     suggestionContent.value.trim();
@@ -491,13 +554,10 @@ async function sendSuggestion(){
 
     if(!content){
 
-
         suggestionMessage.textContent =
         "Write a suggestion first.";
 
-
         return;
-
 
     }
 
@@ -505,8 +565,6 @@ async function sendSuggestion(){
 
     suggestionMessage.textContent =
     "Sending...";
-
-
 
 
 
@@ -525,27 +583,19 @@ async function sendSuggestion(){
 
 
 
-
-
     if(error){
-
 
         console.error(
             "Suggestion error:",
             error
         );
 
-
         suggestionMessage.textContent =
         error.message;
 
-
         return;
 
-
     }
-
-
 
 
 
@@ -556,16 +606,11 @@ async function sendSuggestion(){
     suggestionMessage.textContent =
     "Suggestion sent to Grove.";
 
-
 }
 
 
 
-
-
-
 async function loadPosts(){
-
 
     const { data, error } =
     await window.groveClient
@@ -597,8 +642,8 @@ async function loadPosts(){
     );
 
 
-    if(error){
 
+    if(error){
 
         console.error(
             "Feed error:",
@@ -606,32 +651,28 @@ async function loadPosts(){
         );
 
 
+
         feed.innerHTML =
         "<p>Unable to load feed.</p>";
 
 
+
         return;
 
-
     }
-
-
 
 
 
     if(!data.length){
 
-
         feed.innerHTML =
         "<p>No posts yet. Be the first in Grove.</p>";
 
 
+
         return;
 
-
     }
-
-
 
 
 
@@ -639,10 +680,7 @@ async function loadPosts(){
 
 
 
-
-
     data.forEach(post=>{
-
 
         const div =
         document.createElement("div");
@@ -685,6 +723,7 @@ async function loadPosts(){
             </button>
 
 
+
             <button onclick="deletePost('${post.id}')">
 
             Delete
@@ -712,9 +751,11 @@ async function loadPosts(){
         </p>
 
 
+
         <p>
         ${post.content}
         </p>
+
 
 
         <div>
@@ -722,6 +763,7 @@ async function loadPosts(){
         ${controls}
 
         </div>
+
 
 
         <p class="post-time">
@@ -736,100 +778,67 @@ async function loadPosts(){
 
         feed.appendChild(div);
 
-
-
     });
 
-
 }
-
-
-
-
 
 
 
 window.deletePost =
 deletePost;
 
-
 window.editPost =
 editPost;
 
 
 
-
-
-
-
-
 createPostButton.addEventListener(
-"click",
-createPost
+    "click",
+    createPost
 );
-
-
-
-
-
 
 
 
 if(sendSuggestionButton){
 
-
     sendSuggestionButton.addEventListener(
-    "click",
-    sendSuggestion
+        "click",
+        sendSuggestion
     );
-
 
 }
 
 
 
-
-
-
-
-
 logoutButton.addEventListener(
-"click",
-async ()=>{
+    "click",
+    async ()=>{
+
+        const { error } =
+        await window.groveClient.auth.signOut();
 
 
-    const { error } =
-    await window.groveClient.auth.signOut();
+
+        if(error){
+
+            console.error(
+                "Logout error:",
+                error
+            );
+
+            return;
+
+        }
 
 
 
-    if(error){
-
-
-        console.error(
-            "Logout error:",
-            error
-        );
-
-
-        return;
-
+        window.location.href =
+        "index.html";
 
     }
-
-
-
-    window.location.href =
-    "index.html";
-
-
-});
-
-
-
-
-
+);
 
 
 
 checkUser();
+```
